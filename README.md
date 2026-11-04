@@ -56,10 +56,10 @@ minute; the full run takes about six minutes.
 |---|---|---|
 | `verify_claims.py` | `results/controlled_results.json` | 5, 6 |
 | `verify_3d_ba_theorem.py` | `results/ijrr_3d_ba_theorem.json` | 4 |
-| `synthetic_chart_experiment.py` | `results/synthetic_chart_experiment.json` | 8 |
-| `repro_sim2_ablation.py` | `results/repro_sim2_ablation.json` | 9 |
-| `real_invariance.py` | `results/real_invariance.json` | 10 |
-| `real_depth_collapse.py` | `results/real_depth_collapse.json` | 11 |
+| `synthetic_chart_experiment.py` | `results/synthetic_chart_experiment.json` | 7 |
+| `repro_sim2_ablation.py` | `results/repro_sim2_ablation.json` | 8 |
+| `real_invariance.py` | `results/real_invariance.json` | 9 |
+| `real_depth_collapse.py` | `results/real_depth_collapse.json` | 10 |
 | `make_ba_theorem_figure.py` | `figures/ba_theorem.png` | Fig. 1 |
 | `make_synthetic_figure.py` | `figures/synthetic_chart.png` | Fig. 2 |
 | `make_depth_figure.py` | `figures/real_depth.png` | Fig. 3 |
