@@ -27,6 +27,7 @@ real_data_plan.md
 
 # driven by a private Ceres build; superseded by the synthetic and real tests
 code/_proto_ba.py
+_u_vs_s.py
 code/analyze_parallax_atlas.py
 code/run_parallax_atlas.py
 results/parallax_atlas_*
