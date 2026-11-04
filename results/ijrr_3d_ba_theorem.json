@@ -1,0 +1,482 @@
+{
+  "experiment_A_generic_ba": {
+    "cameras": 5,
+    "points": 15,
+    "observations": 75,
+    "variables": 75,
+    "rank_Hx": 68,
+    "nullity_Hx": 7,
+    "rank_Hq": 68,
+    "nullity_Hq": 7,
+    "rank_JX": 45,
+    "rank_Sx": 23,
+    "nullity_Sx": 7,
+    "rank_Sq": 23,
+    "nullity_Sq": 7,
+    "rank_identity_Hx_minus_rank_JX": 23,
+    "max_reconstruction_error": 2.6645352591003757e-15,
+    "max_analytic_vs_fd_chart_jacobian": 1.6221314957931554e-08,
+    "max_Hq_minus_TtHxT": 1.7763568394002505e-15,
+    "max_Sq_minus_Sx": 7.105427357601002e-15,
+    "relative_Sq_minus_Sx": 5.949995607664539e-16,
+    "max_gradient_congruence_error": 2.220446049250313e-16,
+    "max_reduced_gradient_difference": 2.6922908347160046e-15,
+    "damped_full_ba_metric_identity_error": 1.6672774272308288e-13,
+    "damped_full_ba_relative_step_difference": 0.33738067728711624,
+    "condition_D": 2.9588297042124045,
+    "inertia_Hx": [
+      68,
+      0,
+      7
+    ],
+    "inertia_Hq": [
+      68,
+      0,
+      7
+    ]
+  },
+  "experiment_B_collinear_point": {
+    "base": {
+      "rank_H": 32,
+      "nullity_H": 7,
+      "rank_JX": 15,
+      "rank_S": 17,
+      "nullity_S": 7,
+      "rank_identity": 17
+    },
+    "augmented_with_collinear_point": {
+      "rank_H": 34,
+      "nullity_H": 8,
+      "rank_JX": 17,
+      "rank_S": 17,
+      "nullity_S": 7,
+      "rank_identity": 17,
+      "point_block_rank": 2,
+      "point_block_singular_values": [
+        1.1489713895072629,
+        1.133371629254941,
+        2.3552905093922863e-18
+      ],
+      "pose_rank_of_full_null_space": 7
+    },
+    "S_null_space_principal_cosines_min": 0.9999999999999999,
+    "S_augmented_minus_base_min_eigenvalue": -7.579627147303783e-16,
+    "S_augmented_minus_base_max_abs": 0.8155355107270967,
+    "collinear_ray": [
+      {
+        "t": 1.5,
+        "beta": 0.0,
+        "omega": 0.0,
+        "reconstruction_numerator": 0.0,
+        "reconstruction_denominator": 0.0,
+        "distance": 1.5
+      },
+      {
+        "t": 2.0,
+        "beta": 0.0,
+        "omega": 0.0,
+        "reconstruction_numerator": 0.0,
+        "reconstruction_denominator": 0.0,
+        "distance": 2.0
+      },
+      {
+        "t": 3.0,
+        "beta": 0.0,
+        "omega": 0.0,
+        "reconstruction_numerator": 0.0,
+        "reconstruction_denominator": 0.0,
+        "distance": 3.0
+      },
+      {
+        "t": 5.0,
+        "beta": 0.0,
+        "omega": 0.0,
+        "reconstruction_numerator": 0.0,
+        "reconstruction_denominator": 0.0,
+        "distance": 5.0
+      },
+      {
+        "t": 8.0,
+        "beta": 0.0,
+        "omega": 0.0,
+        "reconstruction_numerator": 0.0,
+        "reconstruction_denominator": 0.0,
+        "distance": 8.0
+      },
+      {
+        "t": 20.0,
+        "beta": 0.0,
+        "omega": 0.0,
+        "reconstruction_numerator": 0.0,
+        "reconstruction_denominator": 0.0,
+        "distance": 20.0
+      }
+    ]
+  },
+  "experiment_C_sparsity": {
+    "full_visibility_5cam": {
+      "nonzeros_A_xyz": 885,
+      "nonzeros_A_parallax": 1620,
+      "density_ratio": 1.8305084745762712,
+      "nonzero_pose_blocks_S_xyz": 15,
+      "nonzero_pose_blocks_S_parallax": 15,
+      "block_patterns_identical": true,
+      "possible_upper_blocks": 15
+    },
+    "partial_visibility_6cam": {
+      "nonzeros_A_xyz": 490,
+      "nonzeros_A_parallax": 806,
+      "density_ratio": 1.6448979591836734,
+      "nonzero_pose_blocks_S_xyz": 12,
+      "nonzero_pose_blocks_S_parallax": 12,
+      "block_patterns_identical": true,
+      "possible_upper_blocks": 21
+    }
+  },
+  "experiment_D_damped_lm": {
+    "metric_identity_max_error": 4.423128530106624e-12,
+    "trust_region_axes": [
+      {
+        "omega": 0.1,
+        "depth_over_baseline": 9.966644423259238,
+        "singular_values": [
+          100.33903394664638,
+          9.966644423259234,
+          9.966144508193294
+        ],
+        "aspect_ratio_max_min": 10.067989066800747,
+        "predicted_depth_over_baseline": 9.966644423259238
+      },
+      {
+        "omega": 0.01,
+        "depth_over_baseline": 99.99666664444422,
+        "singular_values": [
+          10000.333390003438,
+          99.99666664444425,
+          99.99666614444425
+        ],
+        "aspect_ratio_max_min": 100.00666797789088,
+        "predicted_depth_over_baseline": 99.99666664444422
+      },
+      {
+        "omega": 0.001,
+        "depth_over_baseline": 999.9996666666443,
+        "singular_values": [
+          1000000.3333339003,
+          999.9996666666445,
+          999.9996666661443
+        ],
+        "aspect_ratio_max_min": 1000.0006666679782,
+        "predicted_depth_over_baseline": 999.9996666666443
+      }
+    ],
+    "single_point_lm_steps": [
+      {
+        "lambda": 1e-12,
+        "step_xyz": [
+          -3.796301554326146e-07,
+          -2.6245601337166713,
+          -0.0
+        ],
+        "step_parallax_mapped": [
+          -4.9977492977327363e-14,
+          -2.62460000399333,
+          0.0
+        ],
+        "relative_difference": 1.5191911000541618e-05,
+        "depth_ratio": 1.000015191222387
+      },
+      {
+        "lambda": 1e-10,
+        "step_xyz": [
+          -3.790599804762694e-05,
+          -2.6206189634708017,
+          -0.0
+        ],
+        "step_parallax_mapped": [
+          -4.998082847095544e-12,
+          -2.6246000034737547,
+          0.0
+        ],
+        "relative_difference": 0.0015191908924480847,
+        "depth_ratio": 1.0015191220312625
+      },
+      {
+        "lambda": 1e-08,
+        "step_xyz": [
+          -0.0032956169564391136,
+          -2.278476320094215,
+          -0.0
+        ],
+        "step_parallax_mapped": [
+          -4.998090682440663e-10,
+          -2.6245999515161493,
+          0.0
+        ],
+        "relative_difference": 0.15191685581327108,
+        "depth_ratio": 1.1519101288740283
+      },
+      {
+        "lambda": 1e-06,
+        "step_xyz": [
+          -0.023412757278016658,
+          -0.16230931534156762,
+          -0.0
+        ],
+        "step_parallax_mapped": [
+          -4.998075929460051e-08,
+          -2.624594755768594,
+          0.0
+        ],
+        "relative_difference": 15.015599427630674,
+        "depth_ratio": 16.170327317599323
+      },
+      {
+        "lambda": 0.0001,
+        "step_xyz": [
+          -0.02194716574005248,
+          -0.0019354068149288351,
+          -0.0
+        ],
+        "step_parallax_mapped": [
+          -4.996591897965065e-06,
+          -2.624075310855231,
+          0.0
+        ],
+        "relative_difference": 119.01740982876618,
+        "depth_ratio": 1355.8262224842472
+      },
+      {
+        "lambda": 0.01,
+        "step_xyz": [
+          -0.001690516048389879,
+          -3.3373332246709786e-05,
+          -0.0
+        ],
+        "step_parallax_mapped": [
+          -0.000485204447476437,
+          -2.573396342692682,
+          0.0
+        ],
+        "relative_difference": 1521.9387866657391,
+        "depth_ratio": 77109.36156057322
+      },
+      {
+        "lambda": 1.0,
+        "step_xyz": [
+          -1.8118804039889568e-05,
+          -3.452913640578008e-07,
+          -0.0
+        ],
+        "step_parallax_mapped": [
+          -0.00999618909907967,
+          -1.0500311920043237,
+          0.0
+        ],
+        "relative_difference": 57944.642745945974,
+        "depth_ratio": 3041000.4457237204
+      }
+    ]
+  },
+  "experiment_E_near_singular": {
+    "rows": [
+      {
+        "omega": 0.1,
+        "depth": 9.966644423259238,
+        "kappa_IX": 400.3435671757113,
+        "kappa_Iq": 6.854101966249695,
+        "kappa_D": 10.067989066800747,
+        "depth_information": 9.93353297398198e-05,
+        "det_IX": 2.0034025471102623e-08,
+        "det_Iq": 1.990033288920619,
+        "Iq": [
+          [
+            1.99003328892062,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.9999999999999996,
+            1.000000000000001
+          ],
+          [
+            0.0,
+            1.0000000000000013,
+            1.000000000000001
+          ]
+        ]
+      },
+      {
+        "omega": 0.01,
+        "depth": 99.99666664444422,
+        "kappa_IX": 40000.33343500667,
+        "kappa_Iq": 6.8541019662497655,
+        "kappa_D": 100.00666797789088,
+        "depth_information": 9.999333353332979e-09,
+        "det_IX": 2.000033340222551e-16,
+        "det_Iq": 1.9999000033332903,
+        "Iq": [
+          [
+            1.9999000033332894,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            2.0000000000000004,
+            1.0000000000000129
+          ],
+          [
+            0.0,
+            1.0000000000000129,
+            1.0000000000000129
+          ]
+        ]
+      },
+      {
+        "omega": 0.001,
+        "depth": 999.9996666666443,
+        "kappa_IX": 4000000.3333343472,
+        "kappa_Iq": 6.854101966250437,
+        "kappa_D": 1000.0006666679782,
+        "depth_information": 9.99999333333534e-13,
+        "det_IX": 2.0000003333340215e-24,
+        "det_Iq": 1.9999990000003356,
+        "Iq": [
+          [
+            1.999999000000334,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            2.000000000000001,
+            1.0000000000001232
+          ],
+          [
+            0.0,
+            1.0000000000001232,
+            1.0000000000001232
+          ]
+        ]
+      },
+      {
+        "omega": 0.0001,
+        "depth": 9999.999966666666,
+        "kappa_IX": 400000000.3333333,
+        "kappa_Iq": 6.85410196625719,
+        "kappa_D": 10000.000066666671,
+        "depth_information": 9.999999933333336e-17,
+        "det_IX": 2.0000000033333449e-32,
+        "det_Iq": 1.9999999899999996,
+        "Iq": [
+          [
+            1.9999999899999998,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            2.0,
+            1.0000000000012248
+          ],
+          [
+            0.0,
+            1.0000000000012248,
+            1.0000000000012248
+          ]
+        ]
+      },
+      {
+        "omega": 1e-05,
+        "depth": 99999.99999666667,
+        "kappa_IX": 40000000000.33333,
+        "kappa_Iq": 6.854101966324763,
+        "kappa_D": 100000.00000666667,
+        "depth_information": 9.999999999333334e-21,
+        "det_IX": 2.0000000000333393e-40,
+        "det_Iq": 1.9999999998999995,
+        "Iq": [
+          [
+            1.9999999998999998,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            2.0,
+            1.0000000000122464
+          ],
+          [
+            0.0,
+            1.0000000000122464,
+            1.0000000000122464
+          ]
+        ]
+      },
+      {
+        "omega": 1e-06,
+        "depth": 999999.9999996667,
+        "kappa_IX": 4000000000000.3345,
+        "kappa_Iq": 6.8541019670004575,
+        "kappa_D": 1000000.0000006672,
+        "depth_information": 9.999999999993332e-25,
+        "det_IX": 2.0000000000003524e-48,
+        "det_Iq": 1.999999999999,
+        "Iq": [
+          [
+            1.999999999999,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            2.0,
+            1.000000000122465
+          ],
+          [
+            0.0,
+            1.000000000122465,
+            1.000000000122465
+          ]
+        ]
+      },
+      {
+        "omega": 1e-07,
+        "depth": 9999999.999999966,
+        "kappa_IX": 400000000000000.3,
+        "kappa_Iq": 6.854101973757373,
+        "kappa_D": 10000000.000000065,
+        "depth_information": 9.999999999999934e-29,
+        "det_IX": 1.9999999999999937e-56,
+        "det_Iq": 1.999999999999993,
+        "Iq": [
+          [
+            1.999999999999991,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            2.000000000000001,
+            1.0000000012246468
+          ],
+          [
+            0.0,
+            1.000000001224647,
+            1.000000001224647
+          ]
+        ]
+      }
+    ],
+    "loglog_slopes": {
+      "kappa_IX": -1.9998877827422863,
+      "kappa_Iq": -1.4668454105046488e-13,
+      "kappa_D": -0.9991143134740681,
+      "depth_information": 3.9991282558379297,
+      "det_IX": 8.000222184292188,
+      "det_Iq": -0.0006530454060976273
+    }
+  }
+}

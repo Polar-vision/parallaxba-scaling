@@ -1,0 +1,589 @@
+{
+  "aligned_2d": {
+    "configuration": {
+      "theta": 0.3,
+      "phi_t": 0.3,
+      "phi": 0.0
+    },
+    "xyz_jacobian": [
+      [
+        1.0,
+        0.0
+      ],
+      [
+        1.3333333333333333,
+        1.2335811384723961e-17
+      ]
+    ],
+    "xyz_normal_matrix": [
+      [
+        2.7777777777777777,
+        1.644774851296528e-17
+      ],
+      [
+        1.644774851296528e-17,
+        1.521722425194853e-34
+      ]
+    ],
+    "idp_jacobian": [
+      [
+        1.0,
+        0.0
+      ],
+      [
+        1.3333333333333333,
+        -4.9343245538895844e-17
+      ]
+    ],
+    "idp_normal_matrix": [
+      [
+        2.7777777777777777,
+        -6.579099405186112e-17
+      ],
+      [
+        -6.579099405186112e-17,
+        2.4347558803117647e-33
+      ]
+    ],
+    "parallax_jacobian": [
+      [
+        1.0,
+        0.0
+      ],
+      [
+        1.0,
+        1.0
+      ]
+    ],
+    "parallax_normal_matrix": [
+      [
+        2.0,
+        1.0
+      ],
+      [
+        1.0,
+        1.0
+      ]
+    ],
+    "omega_at_depths_1_4_100": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "chart_derivative_theta_d_to_theta_omega": [
+      [
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0
+      ]
+    ],
+    "interpretation": "Parallax coordinates remain informative while depth is not identifiable; the chart is non-injective at phi=0."
+  },
+  "degenerate_3d": {
+    "original_forward_scaled_ray": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "original_forward_projection": [
+      NaN,
+      NaN
+    ],
+    "original_backward_scaled_ray": [
+      0.0,
+      0.0,
+      1.2246467991473532e-16
+    ],
+    "cep_regularized_ray_at_exact_zero": [
+      0.0,
+      0.0,
+      1e-12
+    ],
+    "cep_regularized_projection_at_exact_zero": [
+      0.0,
+      0.0
+    ],
+    "near_zero_sweep": [
+      {
+        "beta_rad": 0.0,
+        "original_scaled_ray": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "original_projection": [
+          NaN,
+          NaN
+        ],
+        "cep_regularized_projection": [
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "beta_rad": 1e-14,
+        "original_scaled_ray": [
+          0.0,
+          0.0,
+          1e-14
+        ],
+        "original_projection": [
+          0.0,
+          0.0
+        ],
+        "cep_regularized_projection": [
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "beta_rad": 1e-12,
+        "original_scaled_ray": [
+          0.0,
+          0.0,
+          1e-12
+        ],
+        "original_projection": [
+          0.0,
+          0.0
+        ],
+        "cep_regularized_projection": [
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "beta_rad": 1e-10,
+        "original_scaled_ray": [
+          0.0,
+          0.0,
+          1e-10
+        ],
+        "original_projection": [
+          0.0,
+          0.0
+        ],
+        "cep_regularized_projection": [
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "beta_rad": 1e-08,
+        "original_scaled_ray": [
+          0.0,
+          0.0,
+          1e-08
+        ],
+        "original_projection": [
+          0.0,
+          0.0
+        ],
+        "cep_regularized_projection": [
+          0.0,
+          0.0
+        ]
+      }
+    ],
+    "interpretation": "The original 3-D residual is undefined at beta=omega=0; the floor adds a regularization that the original equation does not contain."
+  },
+  "regularization_continuation": {
+    "configuration": "associate view; main ray nearly parallel to the anchor baseline",
+    "analytic_transverse_over_longitudinal_limit_as_beta_to_0": 0.10033467208545055,
+    "analytic_projection_bearing_limit_as_beta_to_0": 0.1,
+    "note": "The limiting transverse/longitudinal ratio is tan(omega), so the projected bearing angle tends to omega.",
+    "fixed_omega_auxiliary_coordinate_rows": [
+      {
+        "beta_rad": 0.0,
+        "omega_rad": 0.1,
+        "original_projection_angle_rad": NaN,
+        "cep_regularized_projection_angle_rad": 0.0,
+        "cep_minus_original_rad": null
+      },
+      {
+        "beta_rad": 1e-14,
+        "omega_rad": 0.1,
+        "original_projection_angle_rad": 0.0999966835893947,
+        "cep_regularized_projection_angle_rad": 0.0010033408734219007,
+        "cep_minus_original_rad": -0.0989933427159728
+      },
+      {
+        "beta_rad": 1e-12,
+        "omega_rad": 0.1,
+        "original_projection_angle_rad": 0.09999945441766368,
+        "cep_regularized_projection_angle_rad": 0.09999945441766368,
+        "cep_minus_original_rad": 0.0
+      },
+      {
+        "beta_rad": 1e-10,
+        "omega_rad": 0.1,
+        "original_projection_angle_rad": 0.09999999484482978,
+        "cep_regularized_projection_angle_rad": 1.4714573964104651,
+        "cep_minus_original_rad": 1.3714574015656353
+      },
+      {
+        "beta_rad": 1e-08,
+        "omega_rad": 0.1,
+        "original_projection_angle_rad": 0.10000000991093355,
+        "cep_regularized_projection_angle_rad": 1.5697996572085091,
+        "cep_minus_original_rad": 1.4697996472975756
+      },
+      {
+        "beta_rad": 1e-07,
+        "omega_rad": 0.1,
+        "original_projection_angle_rad": 0.10000009999761043,
+        "cep_regularized_projection_angle_rad": 0.10003982164853599,
+        "cep_minus_original_rad": 3.972165092555602e-05
+      },
+      {
+        "beta_rad": 1e-06,
+        "omega_rad": 0.1,
+        "original_projection_angle_rad": 0.10000099999978902,
+        "cep_regularized_projection_angle_rad": 0.09999658483830598,
+        "cep_minus_original_rad": -4.415161483042884e-06
+      }
+    ],
+    "fixed_omega_caveat": "beta near zero with fixed omega=0.1 is generally not a regular finite-point triangulation; it tests only the optimizer's auxiliary-coordinate domain.",
+    "physically_consistent_forward_paths": [
+      {
+        "beta_rad": 1e-14,
+        "omega_over_beta": 0.01,
+        "omega_rad": 1e-16,
+        "original_projection_angle_rad": 1.0100000000000001e-14,
+        "cep_regularized_projection_angle_rad": 1.0001e-14,
+        "absolute_cep_error_rad": 9.900000000000102e-17
+      },
+      {
+        "beta_rad": 1e-14,
+        "omega_over_beta": 0.5,
+        "omega_rad": 5e-15,
+        "original_projection_angle_rad": 1.5000000000000002e-14,
+        "cep_regularized_projection_angle_rad": 1.005e-14,
+        "absolute_cep_error_rad": 4.950000000000002e-15
+      },
+      {
+        "beta_rad": 1e-14,
+        "omega_over_beta": 0.9,
+        "omega_rad": 9e-15,
+        "original_projection_angle_rad": 1.8999999999999998e-14,
+        "cep_regularized_projection_angle_rad": 1.009e-14,
+        "absolute_cep_error_rad": 8.909999999999998e-15
+      },
+      {
+        "beta_rad": 1e-12,
+        "omega_over_beta": 0.01,
+        "omega_rad": 1e-14,
+        "original_projection_angle_rad": 1.01e-12,
+        "cep_regularized_projection_angle_rad": 1.01e-12,
+        "absolute_cep_error_rad": 0.0
+      },
+      {
+        "beta_rad": 1e-12,
+        "omega_over_beta": 0.5,
+        "omega_rad": 5e-13,
+        "original_projection_angle_rad": 1.4999999999999997e-12,
+        "cep_regularized_projection_angle_rad": 1.4999999999999997e-12,
+        "absolute_cep_error_rad": 0.0
+      },
+      {
+        "beta_rad": 1e-12,
+        "omega_over_beta": 0.9,
+        "omega_rad": 9e-13,
+        "original_projection_angle_rad": 1.9e-12,
+        "cep_regularized_projection_angle_rad": 1.9e-12,
+        "absolute_cep_error_rad": 0.0
+      },
+      {
+        "beta_rad": 1e-10,
+        "omega_over_beta": 0.01,
+        "omega_rad": 1e-12,
+        "original_projection_angle_rad": 1.01e-10,
+        "cep_regularized_projection_angle_rad": 2e-10,
+        "absolute_cep_error_rad": 9.900000000000001e-11
+      },
+      {
+        "beta_rad": 1e-10,
+        "omega_over_beta": 0.5,
+        "omega_rad": 5e-11,
+        "original_projection_angle_rad": 1.5000000000000002e-10,
+        "cep_regularized_projection_angle_rad": 5.099999999999985e-09,
+        "absolute_cep_error_rad": 4.949999999999986e-09
+      },
+      {
+        "beta_rad": 1e-10,
+        "omega_over_beta": 0.9,
+        "omega_rad": 9e-11,
+        "original_projection_angle_rad": 1.9e-10,
+        "cep_regularized_projection_angle_rad": 9.100000000000032e-09,
+        "absolute_cep_error_rad": 8.910000000000031e-09
+      },
+      {
+        "beta_rad": 1e-08,
+        "omega_over_beta": 0.01,
+        "omega_rad": 1e-10,
+        "original_projection_angle_rad": 1.01e-08,
+        "cep_regularized_projection_angle_rad": 1.00999999999966e-06,
+        "absolute_cep_error_rad": 9.9989999999966e-07
+      },
+      {
+        "beta_rad": 1e-08,
+        "omega_over_beta": 0.5,
+        "omega_rad": 5e-09,
+        "original_projection_angle_rad": 1.5e-08,
+        "cep_regularized_projection_angle_rad": 5.000999995829299e-05,
+        "absolute_cep_error_rad": 4.999499995829299e-05
+      },
+      {
+        "beta_rad": 1e-08,
+        "omega_over_beta": 0.9,
+        "omega_rad": 9.000000000000001e-09,
+        "original_projection_angle_rad": 1.8999999999999998e-08,
+        "cep_regularized_projection_angle_rad": 9.000999975696584e-05,
+        "absolute_cep_error_rad": 8.999099975696584e-05
+      },
+      {
+        "beta_rad": 1e-07,
+        "omega_over_beta": 0.01,
+        "omega_rad": 1e-09,
+        "original_projection_angle_rad": 1.0099999999999999e-07,
+        "cep_regularized_projection_angle_rad": 1.0100039987859518e-07,
+        "absolute_cep_error_rad": 3.9987859518634613e-13
+      },
+      {
+        "beta_rad": 1e-07,
+        "omega_over_beta": 0.5,
+        "omega_rad": 5e-08,
+        "original_projection_angle_rad": 1.4999999999999997e-07,
+        "cep_regularized_projection_angle_rad": 1.5001999392975968e-07,
+        "absolute_cep_error_rad": 1.9993929759714353e-11
+      },
+      {
+        "beta_rad": 1e-07,
+        "omega_over_beta": 0.9,
+        "omega_rad": 9e-08,
+        "original_projection_angle_rad": 1.8999999999999998e-07,
+        "cep_regularized_projection_angle_rad": 1.900359890735675e-07,
+        "absolute_cep_error_rad": 3.5989073567512305e-11
+      },
+      {
+        "beta_rad": 1e-06,
+        "omega_over_beta": 0.01,
+        "omega_rad": 1e-08,
+        "original_projection_angle_rad": 1.01e-06,
+        "cep_regularized_projection_angle_rad": 1.0099995555267167e-06,
+        "absolute_cep_error_rad": 4.444732833874679e-13
+      },
+      {
+        "beta_rad": 1e-06,
+        "omega_over_beta": 0.5,
+        "omega_rad": 5e-07,
+        "original_projection_angle_rad": 1.5e-06,
+        "cep_regularized_projection_angle_rad": 1.4999777763358427e-06,
+        "absolute_cep_error_rad": 2.2223664157303177e-11
+      },
+      {
+        "beta_rad": 1e-06,
+        "omega_over_beta": 0.9,
+        "omega_rad": 9e-07,
+        "original_projection_angle_rad": 1.9000000000000007e-06,
+        "cep_regularized_projection_angle_rad": 1.899959997404518e-06,
+        "absolute_cep_error_rad": 4.00025954826375e-11
+      }
+    ],
+    "numerical_caveat": "The regularized model evaluates 1-cos(beta)^2 in IEEE double precision, matching the cancellation-prone form of the implementation's formula; it is a reduced numerical experiment, not a measured error on real data.",
+    "interpretation": "The original scaled ray is zero on the entire beta=0 line in this reduced associate-view model. The floor defines a finite continuation, but double-precision cancellation can change the residual near collinearity. Absolute errors must be reported alongside these relative effects."
+  },
+  "gn_lm_invariance": {
+    "cases": [
+      {
+        "phi_rad": 0.01,
+        "depth": 2.0,
+        "condition_xyz": 249996.34009818375,
+        "condition_inverse_depth": 15632.270535889493,
+        "condition_xyz_after_jacobi_scaling": 17.939458316437403,
+        "condition_idp_after_jacobi_scaling": 17.939458316437403,
+        "gn_physical_step_error": 0.0,
+        "lm_pullback_metric_step_error": 0.0
+      },
+      {
+        "phi_rad": 0.01,
+        "depth": 10.0,
+        "condition_xyz": 327624112.0916368,
+        "condition_inverse_depth": 32764.878598286297,
+        "condition_xyz_after_jacobi_scaling": 6.790949735522837,
+        "condition_idp_after_jacobi_scaling": 6.790949735522833,
+        "gn_physical_step_error": 8.526512829121202e-14,
+        "lm_pullback_metric_step_error": 7.105427357601002e-15
+      },
+      {
+        "phi_rad": 0.01,
+        "depth": 100.0,
+        "condition_xyz": 3921825790652.912,
+        "condition_inverse_depth": 39211.34694173341,
+        "condition_xyz_after_jacobi_scaling": 5.9120663998664424,
+        "condition_idp_after_jacobi_scaling": 5.91206639986644,
+        "gn_physical_step_error": 1.0913936421275139e-11,
+        "lm_pullback_metric_step_error": 9.094947017729282e-13
+      },
+      {
+        "phi_rad": 0.05,
+        "depth": 2.0,
+        "condition_xyz": 9996.50154739195,
+        "condition_inverse_depth": 632.2633326760205,
+        "condition_xyz_after_jacobi_scaling": 17.824742647423896,
+        "condition_idp_after_jacobi_scaling": 17.824742647423896,
+        "gn_physical_step_error": 0.0,
+        "lm_pullback_metric_step_error": 0.0
+      },
+      {
+        "phi_rad": 0.05,
+        "depth": 10.0,
+        "condition_xyz": 13118503.935446618,
+        "condition_inverse_depth": 1314.3214896036652,
+        "condition_xyz_after_jacobi_scaling": 6.789305570998758,
+        "condition_idp_after_jacobi_scaling": 6.789305570998761,
+        "gn_physical_step_error": 7.105427357601002e-15,
+        "lm_pullback_metric_step_error": 0.0
+      },
+      {
+        "phi_rad": 0.05,
+        "depth": 100.0,
+        "condition_xyz": 156968501439.38217,
+        "condition_inverse_depth": 1571.707732226684,
+        "condition_xyz_after_jacobi_scaling": 5.911962515546112,
+        "condition_idp_after_jacobi_scaling": 5.911962515546118,
+        "gn_physical_step_error": 9.094947017729282e-13,
+        "lm_pullback_metric_step_error": 3.469446951953614e-18
+      },
+      {
+        "phi_rad": 0.2,
+        "depth": 2.0,
+        "condition_xyz": 623.8382320070784,
+        "condition_inverse_depth": 46.20015720209545,
+        "condition_xyz_after_jacobi_scaling": 16.215111046736457,
+        "condition_idp_after_jacobi_scaling": 16.215111046736457,
+        "gn_physical_step_error": 0.0,
+        "lm_pullback_metric_step_error": 0.0
+      },
+      {
+        "phi_rad": 0.2,
+        "depth": 10.0,
+        "condition_xyz": 833250.5345374861,
+        "condition_inverse_depth": 85.82857790954434,
+        "condition_xyz_after_jacobi_scaling": 6.76385788229193,
+        "condition_idp_after_jacobi_scaling": 6.763857882291926,
+        "gn_physical_step_error": 5.329070518200751e-15,
+        "lm_pullback_metric_step_error": 1.7763568394002505e-15
+      },
+      {
+        "phi_rad": 0.2,
+        "depth": 100.0,
+        "condition_xyz": 9937691107.214556,
+        "condition_inverse_depth": 101.44792325079638,
+        "condition_xyz_after_jacobi_scaling": 5.910345521553296,
+        "condition_idp_after_jacobi_scaling": 5.910345521553296,
+        "gn_physical_step_error": 6.821210263296962e-13,
+        "lm_pullback_metric_step_error": 6.821210263296962e-13
+      },
+      {
+        "phi_rad": 0.5,
+        "depth": 2.0,
+        "condition_xyz": 107.92628621667835,
+        "condition_inverse_depth": 12.575051324864042,
+        "condition_xyz_after_jacobi_scaling": 10.99243577458014,
+        "condition_idp_after_jacobi_scaling": 10.99243577458014,
+        "gn_physical_step_error": 0.0,
+        "lm_pullback_metric_step_error": 0.0
+      },
+      {
+        "phi_rad": 0.5,
+        "depth": 10.0,
+        "condition_xyz": 145977.95404301374,
+        "condition_inverse_depth": 17.25977952826014,
+        "condition_xyz_after_jacobi_scaling": 6.6293367661294615,
+        "condition_idp_after_jacobi_scaling": 6.629336766129465,
+        "gn_physical_step_error": 2.6645352591003757e-15,
+        "lm_pullback_metric_step_error": 8.881784197001252e-16
+      },
+      {
+        "phi_rad": 0.5,
+        "depth": 100.0,
+        "condition_xyz": 1709995424.3672965,
+        "condition_inverse_depth": 19.32176297033673,
+        "condition_xyz_after_jacobi_scaling": 5.901502886434276,
+        "condition_idp_after_jacobi_scaling": 5.901502886434276,
+        "gn_physical_step_error": 3.410605131648481e-13,
+        "lm_pullback_metric_step_error": 3.410605131648481e-13
+      }
+    ],
+    "max_gn_physical_step_error": 1.0913936421275139e-11,
+    "max_lm_pullback_metric_step_error": 9.094947017729282e-13
+  },
+  "normalized_parallax_atlas": {
+    "definition": "nu=tan(omega)/sin(beta)=B/(n.(X-C_a)); X=C_m+(n.b+B/nu)n",
+    "regular_cases": 159,
+    "moderately_scaled_determinant_cases": 119,
+    "max_point_equivalence_error": 2.175583928816829e-15,
+    "max_transition_nu_error": 6.821210263296962e-13,
+    "max_raw_determinant_relative_error": 2.2422381224429342e-09,
+    "max_normalized_determinant_relative_error": 1.979290325181964e-09,
+    "max_raw_determinant_absolute_error": 2.0499172705967794e-06,
+    "max_normalized_determinant_absolute_error": 1.625647996661428e-06,
+    "raw_abs_determinant": "d^2*B*abs(sin(beta))/sin(omega)^2 in an orthonormal tangent basis",
+    "normalized_abs_determinant": "d^2*B/nu^2 in an orthonormal tangent basis",
+    "aligned_finite_point_coverage": [
+      {
+        "depth": 1.5,
+        "raw_omega": 0.0,
+        "normalized_nu": 2.0,
+        "normalized_reconstruction": [
+          0.0,
+          0.0,
+          1.5
+        ],
+        "reconstruction_error": 0.0,
+        "original_scaled_ray_at_beta_zero": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "depth": 4.0,
+        "raw_omega": 0.0,
+        "normalized_nu": 0.3333333333333333,
+        "normalized_reconstruction": [
+          0.0,
+          0.0,
+          4.0
+        ],
+        "reconstruction_error": 0.0,
+        "original_scaled_ray_at_beta_zero": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "depth": 100.0,
+        "raw_omega": 0.0,
+        "normalized_nu": 0.010101010101010102,
+        "normalized_reconstruction": [
+          0.0,
+          0.0,
+          99.99999999999999
+        ],
+        "reconstruction_error": 1.4210854715202004e-14,
+        "original_scaled_ray_at_beta_zero": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    ],
+    "interpretation": "The normalized chart is exactly equivalent on the common regular domain, but unlike the raw chart it reconstructs aligned finite points without sin(beta), sin(omega), or a scaled-ray zero. It is an inverse-depth-like complementary chart, not new image information."
+  }
+}

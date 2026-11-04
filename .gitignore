@@ -1,0 +1,49 @@
+# Local data and build products
+data/
+build/
+__pycache__/
+*.pyc
+_v/
+_tmp_pages/
+
+# LaTeX intermediates (main.bbl is kept for arXiv)
+*.aux
+*.log
+*.out
+*.blg
+*.synctex.gz
+
+# ---------------------------------------------------------------------------
+# Not part of the artifact: earlier experiments, private dependencies, drafts.
+# These are kept on disk for traceability but are not published with the paper.
+# ---------------------------------------------------------------------------
+main_before_*.tex
+_sec8.tex
+sources/
+claim_audit.md
+ijrr_3d_ba_theorem.md
+ijrr_3d_math_audit.md
+real_data_plan.md
+
+# driven by a private Ceres build; superseded by the synthetic and real tests
+code/_proto_ba.py
+code/analyze_parallax_atlas.py
+code/run_parallax_atlas.py
+results/parallax_atlas_*
+results/prototypes/
+results/_proto_Sx.npy
+
+# earlier runs, replaced by the JSON files named in the manuscript
+code/compare_reruns.py
+code/analyze_real.py
+code/verify_3d_claims.py
+results/ijrr_3d_audit.json
+results/real_results.json
+results/real_pairwise.csv
+results/rerun_comparison.json
+results/reruns/
+
+# figures from a section that is no longer in the paper
+code/make_figures.py
+figures/near_degenerate.*
+figures/real_benchmark.*
