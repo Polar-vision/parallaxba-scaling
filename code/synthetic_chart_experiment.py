@@ -7,8 +7,10 @@ whereas the damping metric and the domain are not.  This script tests that
 statement on synthetic data with a known ground truth.
 
 Gauge.  Bearing-only BA has a seven-dimensional gauge group: six rigid-body
-degrees of freedom plus one global scale.  Camera 0 is held fixed and the
-baseline of camera 1 is held fixed, which removes all seven.  Every chart is
+degrees of freedom plus one global scale.  Camera 0 is held fixed (six
+coordinates) and so is the translation of camera 1 (three coordinates): nine
+coordinates in all, the seven gauge freedoms plus the two directions of the
+first baseline, which are held at their true values.  Every chart is
 therefore compared at the same physical operating point.
 
 Experiments
@@ -22,7 +24,12 @@ Charts
     xyz  global Euclidean point
     id   anchored inverse depth, optical-axis form (Civera-type)
     ir   anchored inverse range, world bearing
-    pa   parallax angle with main/associate anchors
+    pa   parallax angle with main/associate anchors (baseline-adapted
+         coordinates: angle to and azimuth about the baseline)
+    po   parallax angle in the original coordinates of Zhao et al. (2015),
+         Eqs. (2)-(9): azimuth/elevation of the main bearing in the frame of
+         the first pose, plus omega.  Not part of CHARTS; used by
+         original_chart_experiment.py.
 
 Only numpy is used.
 """
@@ -104,6 +111,16 @@ def chart_forward(chart, p, cams, Rs):
              + math.sin(be) * (math.cos(al) * e2 + math.sin(al) * e3))
         d = B * math.sin(be + om) / math.sin(om)
         return ca + d * n
+    if chart == "po":
+        ps, th, om = p
+        cb = cams[ASSOCIATE]
+        b = cb - ca
+        B = np.linalg.norm(b)
+        n = Ra.T @ np.array([math.sin(ps) * math.cos(th), math.sin(th),
+                             math.cos(ps) * math.cos(th)])
+        phi = math.acos(max(-1.0, min(1.0, float(np.dot(n, b / B)))))
+        d = B * math.sin(phi + om) / math.sin(om)
+        return ca + d * n
     raise ValueError(chart)
 
 
@@ -167,6 +184,41 @@ def chart_jacobian(chart, p, cams, Rs):
                             - chart_forward(chart, p, cm, Rs)) / (2 * h)
             blocks.append((cam, np.hstack([np.zeros((3, 3)), Gt])))
         return X, Jx, blocks
+    if chart == "po":
+        # X = c_m + d n(psi, theta), d = B sin(phi + omega) / sin(omega),
+        # phi = arccos(n . b_hat): phi is the geodesic distance from b_hat, so
+        # d is not differentiable at phi = 0 (a cone), and dphi/dn has unit norm.
+        ps, th, om = p
+        cb = cams[ASSOCIATE]
+        b = cb - ca
+        B = np.linalg.norm(b)
+        bh = b / B
+        sp, cp, st, ct = math.sin(ps), math.cos(ps), math.sin(th), math.cos(th)
+        n = Ra.T @ np.array([sp * ct, st, cp * ct])
+        n_ps = Ra.T @ np.array([cp * ct, 0.0, -sp * ct])
+        n_th = Ra.T @ np.array([-sp * st, ct, -cp * st])
+        c = max(-1.0, min(1.0, float(np.dot(n, bh))))
+        phi = math.acos(c)
+        s_ = math.sin(phi)
+        d = B * math.sin(phi + om) / math.sin(om)
+        dd_phi = B * math.cos(phi + om) / math.sin(om)
+        dd_om = -B * s_ / math.sin(om) ** 2
+        dphi_ps = -float(np.dot(bh, n_ps)) / s_
+        dphi_th = -float(np.dot(bh, n_th)) / s_
+        X = ca + d * n
+        Jx = np.column_stack([d * n_ps + dd_phi * dphi_ps * n,
+                              d * n_th + dd_phi * dphi_th * n,
+                              dd_om * n])
+        eperp = (n - c * bh) / s_
+        gd = (d / B) * bh - (dd_phi / B) * eperp          # d(d)/d(c_associate)
+        # rotation of the anchor frame, R <- exp([w]x) R, gives dn = R^T [m]x dw,
+        # and the sine law moves d through phi = arccos(n . b_hat)
+        m = np.array([sp * ct, st, cp * ct])
+        Grot = (d * np.eye(3) - (dd_phi / s_) * np.outer(n, bh)) @ (Ra.T @ skew(m))
+        blocks = [(ANCHOR, np.hstack([Grot, np.eye(3) - np.outer(n, gd)])),
+                  (len(cams) - 1, np.hstack([np.zeros((3, 3)),
+                                             np.outer(n, gd)]))]
+        return X, Jx, blocks
     raise ValueError(chart)
 
 
@@ -200,6 +252,15 @@ def chart_inverse(chart, X, cams, Rs):
         cross = np.linalg.norm(np.cross(r, ra))
         om = math.atan2(cross, float(np.dot(r, ra)))
         return np.array([al, be, om])
+    if chart == "po":
+        cb = cams[ASSOCIATE]
+        r = X - ca
+        nc = Ra @ (r / np.linalg.norm(r))
+        ra = X - cb
+        om = math.atan2(float(np.linalg.norm(np.cross(r, ra))),
+                        float(np.dot(r, ra)))
+        return np.array([math.atan2(nc[0], nc[2]),
+                         math.atan2(nc[1], math.hypot(nc[0], nc[2])), om])
     raise ValueError(chart)
 
 
@@ -426,7 +487,7 @@ def init_params(state, chart):
         return None
     if chart in ("id", "ir") and np.any(p[:, 2] <= 0):
         return None
-    if chart == "pa" and np.any(np.abs(np.sin(p[:, 2])) < 1e-13):
+    if chart in ("pa", "po") and np.any(np.abs(np.sin(p[:, 2])) < 1e-13):
         return None
     return p
 
@@ -495,8 +556,14 @@ def solve(state, chart, method="lm", metric="chart", max_iter=100, lam0=1e-4):
             status = "converged"
             break
     Xs = np.array([chart_forward(chart, p, cams, Rs) for p in params])
+    # gradient and damping at exit, in chart units: the "converged" flag above is
+    # set by a step-norm test, which says nothing about either of them
+    gmax = None
+    A, B, r, _, _, _, ok = assemble(cur, chart, params, layout)
+    if ok:
+        gmax = float(np.max(np.abs(np.concatenate([A.T @ r, B.T @ r]))))
     return {"status": status, "iter": n_it, "cost": cost, "params": params,
-            "X": Xs, "cams": cams, "Rs": Rs}
+            "X": Xs, "cams": cams, "Rs": Rs, "lam": lam, "gmax": gmax}
 
 
 def summarize(res, probe, dtrue, n_res):

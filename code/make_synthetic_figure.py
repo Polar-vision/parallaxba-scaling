@@ -21,8 +21,17 @@ styles = {
     "xyz": dict(color="#b2182b", marker="o", label="XYZ"),
     "id": dict(color="#2166ac", marker="s", label="inverse depth"),
     "ir": dict(color="#4d9221", marker="^", label="inverse range"),
-    "pa": dict(color="#762a83", marker="D", label="parallax"),
+    "pa": dict(color="#762a83", marker="D", label="parallax (PA)"),
 }
+
+# the parallax chart in the original coordinates of Zhao et al. (2015), same sweep
+po_style = dict(color="#e08214", marker="v", label="parallax, original (PO)")
+po_rows = None
+po_path = os.path.join(ROOT, "results", "original_chart_experiment.json")
+if os.path.exists(po_path):
+    with open(po_path, "r", encoding="utf-8") as f:
+        po_rows = json.load(f)["O2_angle_sweep"]
+    assert [r["beta_deg"] for r in po_rows] == [r["beta_deg"] for r in rows]
 
 plt.rcParams.update({
     "font.size": 7.5,
@@ -42,6 +51,8 @@ fig, axes = plt.subplots(1, 3, figsize=(6.5, 2.5))
 ax = axes[0]
 for c in charts:
     ax.loglog(beta, [r[c]["kappa_H"] for r in rows], "-", ms=3.0, lw=1.1, **styles[c])
+if po_rows is not None:
+    ax.loglog(beta, [r["po"]["kappa_H"] for r in po_rows], ":", ms=3.2, lw=1.4, **po_style)
 ax.set_xscale("log")
 ax.set_xlabel(r"$\beta$ (deg)")
 ax.set_ylabel(r"$\kappa(H_q)$")
@@ -56,6 +67,9 @@ ax.loglog(beta, sd, "-", color="#333333", lw=3.2, alpha=0.30)
 for c in charts:
     ax.loglog(beta, [r[c]["sigma_depth_m"] for r in rows], "o", ms=3.6,
               mfc="none", mec=styles[c]["color"], mew=0.9)
+if po_rows is not None:
+    ax.loglog(beta, [r["po"]["sigma_depth_m"] for r in po_rows], "v", ms=3.6,
+              mfc="none", mec=po_style["color"], mew=0.9)
 chain = np.array([r["pa"]["sigma_point_params"][2] * r["pa"]["dd_domega"] for r in rows])
 ax.loglog(beta, chain, "--", color="#762a83", lw=0.9)
 ax.set_xscale("log")
@@ -79,11 +93,14 @@ fig.tight_layout(pad=0.3, w_pad=0.8, rect=(0, 0.13, 1, 1))
 
 handles = [Line2D([], [], color=styles[c]["color"], marker=styles[c]["marker"],
                   ms=3.2, lw=1.1, label=styles[c]["label"]) for c in charts]
+if po_rows is not None:
+    handles.append(Line2D([], [], color=po_style["color"], marker=po_style["marker"],
+                          ms=3.2, lw=1.4, ls=":", label=po_style["label"]))
 handles.append(Line2D([], [], color="#333333", lw=3.2, alpha=0.30,
-                      label=r"$\sigma_d$ shared by all four"))
+                      label=r"$\sigma_d$ shared by all charts"))
 handles.append(Line2D([], [], color="#762a83", ls="--", lw=0.9,
                       label=r"$\sigma_\omega\,|\partial d/\partial\omega|$"))
-fig.legend(handles=handles, loc="lower center", ncol=3, frameon=False,
+fig.legend(handles=handles, loc="lower center", ncol=4, frameon=False,
            fontsize=6.4, handlelength=1.5, columnspacing=1.4,
            labelspacing=0.35, bbox_to_anchor=(0.5, 0.005))
 
