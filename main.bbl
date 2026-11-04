@@ -1,0 +1,76 @@
+\begin{thebibliography}{9}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Bartoli(2003)]{bartoli2003gauge}
+Adrien Bartoli.
+\newblock Towards gauge invariant bundle adjustment: A solution based on gauge
+  dependent damping.
+\newblock In \emph{Ninth IEEE International Conference on Computer Vision
+  (ICCV)}, pages 760--765, 2003.
+\newblock \doi{10.1109/ICCV.2003.1238425}.
+
+\bibitem[Civera et~al.(2008)Civera, Davison, and Montiel]{civera2008inverse}
+Javier Civera, Andrew~J. Davison, and J.~M.~Mart{\'i}nez Montiel.
+\newblock Inverse depth parametrization for monocular slam.
+\newblock \emph{IEEE Transactions on Robotics}, 24\penalty0 (5):\penalty0
+  932--945, 2008.
+\newblock \doi{10.1109/TRO.2008.2003278}.
+
+\bibitem[Hartley and Zisserman(2004)]{hartley2004multiple}
+Richard Hartley and Andrew Zisserman.
+\newblock \emph{Multiple View Geometry in Computer Vision}.
+\newblock Cambridge University Press, 2 edition, 2004.
+
+\bibitem[Liu et~al.(2018)Liu, Zhang, Liu, Leighton, Zhao, Huang, and
+  Dissanayake]{liu2018pmba}
+Liyang Liu, Teng Zhang, Yi~Liu, Brenton Leighton, Liang Zhao, Shoudong Huang,
+  and Gamini Dissanayake.
+\newblock Parallax bundle adjustment on manifold with convexified
+  initialization, 2018.
+
+\bibitem[Nocedal and Wright(2006)]{nocedal2006numerical}
+Jorge Nocedal and Stephen~J. Wright.
+\newblock \emph{Numerical Optimization}.
+\newblock Springer, 2 edition, 2006.
+\newblock \doi{10.1007/978-0-387-40065-5}.
+
+\bibitem[Sturm et~al.(2012)Sturm, Engelhard, Endres, Burgard, and
+  Cremers]{sturm2012benchmark}
+J{\"u}rgen Sturm, Nikolas Engelhard, Felix Endres, Wolfram Burgard, and Daniel
+  Cremers.
+\newblock A benchmark for the evaluation of {RGB-D} {SLAM} systems.
+\newblock In \emph{IEEE/RSJ International Conference on Intelligent Robots and
+  Systems}, pages 573--580, 2012.
+
+\bibitem[Triggs et~al.(1999)Triggs, McLauchlan, Hartley, and
+  Fitzgibbon]{triggs1999bundle}
+Bill Triggs, Philip~F. McLauchlan, Richard~I. Hartley, and Andrew~W.
+  Fitzgibbon.
+\newblock Bundle adjustment---a modern synthesis.
+\newblock In \emph{Vision Algorithms: Theory and Practice}, volume 1883 of
+  \emph{Lecture Notes in Computer Science}, pages 298--372. Springer, 1999.
+\newblock \doi{10.1007/3-540-44480-7_21}.
+
+\bibitem[Zhao et~al.(2015)Zhao, Huang, Sun, Yan, and
+  Dissanayake]{zhao2015parallaxba}
+Liang Zhao, Shoudong Huang, Yanbiao Sun, Lei Yan, and Gamini Dissanayake.
+\newblock Parallaxba: Bundle adjustment using parallax angle feature
+  parametrization.
+\newblock \emph{The International Journal of Robotics Research}, 34\penalty0
+  (4-5):\penalty0 493--516, 2015.
+\newblock \doi{10.1177/0278364914551583}.
+
+\bibitem[Zuo et~al.(2023)Zuo, Yan, Sun, Zhao, Zhang, Sun, Liu, Wang, and
+  Sun]{zuo2023applicability}
+Zhengkang Zuo, Lei Yan, Yanbiao Sun, Hongying Zhao, Ruihua Zhang, Jiayu Sun,
+  Siyuan Liu, Qiang Wang, and Yiyuan Sun.
+\newblock Applicability study on parallax bundle adjustment in 3d-photography.
+\newblock \emph{Acta Scientiarum Naturalium Universitatis Pekinensis},
+  59\penalty0 (3):\penalty0 445--455, 2023.
+\newblock \doi{10.13209/j.0479-8023.2023.033}.
+
+\end{thebibliography}

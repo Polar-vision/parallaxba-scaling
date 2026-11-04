@@ -1,0 +1,940 @@
+{
+  "protocol": {
+    "noise_per_coordinate": 0.001,
+    "gauge": "camera 0 fixed, camera 1 baseline fixed (scale)",
+    "charts": [
+      "xyz",
+      "id",
+      "ir",
+      "pa"
+    ],
+    "parallax_anchors": "camera 0 and the last camera",
+    "camera_model": "pinhole, focal length 1 in normalized coordinates"
+  },
+  "S1_gn_invariance": {
+    "charts": {
+      "xyz": {
+        "status": "converged",
+        "iter": 4,
+        "final_cost": 2.1825450631491445e-31,
+        "max_depth_rel_error": 1.5163058992421667e-15
+      },
+      "id": {
+        "status": "converged",
+        "iter": 1,
+        "final_cost": 8.600646417508846e-31,
+        "max_depth_rel_error": 6.300123795823528e-15
+      },
+      "ir": {
+        "status": "converged",
+        "iter": 4,
+        "final_cost": 5.937645780127771e-31,
+        "max_depth_rel_error": 8.750171938643788e-16
+      },
+      "pa": {
+        "status": "converged",
+        "iter": 4,
+        "final_cost": 1.211027758296232e-30,
+        "max_depth_rel_error": 8.715176281027078e-16
+      }
+    },
+    "max_abs_position_difference_m": 3.730349362740526e-14
+  },
+  "S2_angle_sweep": [
+    {
+      "beta_deg": 80.0,
+      "xyz": {
+        "kappa_H": 53089956191.87786,
+        "min_singular_value": 6.834504628239528e-06,
+        "nullity": 0,
+        "rank_S": 27,
+        "nullity_S": 0,
+        "sigma_depth_m": 0.08957872009198094,
+        "sigma_point_params": [
+          0.08822681178149544,
+          0.0015614193358714885,
+          0.015508165175450646
+        ],
+        "lm_status": "converged",
+        "lm_iter": 27,
+        "lm_depth_rel_error": 0.005460513884212315,
+        "lm_depth_bounded": true,
+        "lm_rmse_px": 0.36267989269517337
+      },
+      "id": {
+        "kappa_H": 34775583.82140218,
+        "min_singular_value": 0.011178623265931796,
+        "nullity": 0,
+        "rank_S": 27,
+        "nullity_S": 0,
+        "sigma_depth_m": 0.08957872009277124,
+        "sigma_point_params": [
+          0.0009825860369038594,
+          0.0007493212986025809,
+          0.003571556015220332
+        ],
+        "lm_status": "converged",
+        "lm_iter": 9,
+        "lm_depth_rel_error": 0.00546051086275708,
+        "lm_depth_bounded": true,
+        "lm_rmse_px": 0.3626798926951859
+      },
+      "ir": {
+        "kappa_H": 134899418.34486732,
+        "min_singular_value": 0.012862706553236588,
+        "nullity": 0,
+        "rank_S": 27,
+        "nullity_S": 0,
+        "sigma_depth_m": 0.08957872009379307,
+        "sigma_point_params": [
+          0.00013212556216313462,
+          2.962859436902158e-05,
+          0.0006220744450957852
+        ],
+        "lm_status": "converged",
+        "lm_iter": 24,
+        "lm_depth_rel_error": 0.005460513175302347,
+        "lm_depth_bounded": true,
+        "lm_rmse_px": 0.36267989269519285
+      },
+      "pa": {
+        "kappa_H": 226889496.4020232,
+        "min_singular_value": 0.004782561769629286,
+        "nullity": 0,
+        "rank_S": 27,
+        "nullity_S": 0,
+        "sigma_depth_m": 0.08957872006897796,
+        "sigma_point_params": [
+          0.00024566058186161036,
+          0.0026011291453756124,
+          0.0012662276622769071
+        ],
+        "dd_domega": 70.90972174254198,
+        "lm_status": "converged",
+        "lm_iter": 22,
+        "lm_depth_rel_error": 0.005460513236867766,
+        "lm_depth_bounded": true,
+        "lm_rmse_px": 0.36267989269520523
+      }
+    },
+    {
+      "beta_deg": 45.0,
+      "xyz": {
+        "kappa_H": 220574254.80887505,
+        "min_singular_value": 3.8099357501938774e-06,
+        "nullity": 0,
+        "rank_S": 27,
+        "nullity_S": 0,
+        "sigma_depth_m": 0.11371313017428505,
+        "sigma_point_params": [
+          0.08123349796208201,
+          0.00383088079146122,
+          0.07967266835068577
+        ],
+        "lm_status": "converged",
+        "lm_iter": 10,
+        "lm_depth_rel_error": 0.0063223651555420375,
+        "lm_depth_bounded": true,
+        "lm_rmse_px": 0.3774347136326283
+      },
+      "id": {
+        "kappa_H": 141603.4505491302,
+        "min_singular_value": 0.006886792696992294,
+        "nullity": 0,
+        "rank_S": 27,
+        "nullity_S": 0,
+        "sigma_depth_m": 0.11371313017443502,
+        "sigma_point_params": [
+          0.0006654008658121257,
+          0.0004514736309265376,
+          0.0011065648382054616
+        ],
+        "lm_status": "converged",
+        "lm_iter": 8,
+        "lm_depth_rel_error": 0.006322364441840792,
+        "lm_depth_bounded": true,
+        "lm_rmse_px": 0.377434713632644
+      },
+      "ir": {
+        "kappa_H": 283342.95466811437,
+        "min_singular_value": 0.00779992807417192,
+        "nullity": 0,
+        "rank_S": 27,
+        "nullity_S": 0,
+        "sigma_depth_m": 0.11371313017446047,
+        "sigma_point_params": [
+          0.000451473630926537,
+          0.0003327004329060629,
+          0.0007896745151004196
+        ],
+        "lm_status": "converged",
+        "lm_iter": 8,
+        "lm_depth_rel_error": 0.006322364556051062,
+        "lm_depth_bounded": true,
+        "lm_rmse_px": 0.37743471363263803
+      },
+      "pa": {
+        "kappa_H": 691198.9432719015,
+        "min_singular_value": 0.0026506243174265936,
+        "nullity": 0,
+        "rank_S": 27,
+        "nullity_S": 0,
+        "sigma_depth_m": 0.11371313017343593,
+        "sigma_point_params": [
+          0.002391139978350047,
+          0.00332131744974128,
+          0.001650739287454909
+        ],
+        "dd_domega": 80.65180361560905,
+        "lm_status": "converged",
+        "lm_iter": 7,
+        "lm_depth_rel_error": 0.0063223647652714075,
+        "lm_depth_bounded": true,
+        "lm_rmse_px": 0.3774347136326436
+      }
+    },
+    {
+      "beta_deg": 20.0,
+      "xyz": {
+        "kappa_H": 218020408.86081576,
+        "min_singular_value": 3.834463386949407e-06,
+        "nullity": 0,
+        "rank_S": 27,
+        "nullity_S": 0,
+        "sigma_depth_m": 0.22756130384656348,
+        "sigma_point_params": [
+          0.08178938247193555,
+          0.005414558041095345,
+          0.2124765434668472
+        ],
+        "lm_status": "converged",
+        "lm_iter": 10,
+        "lm_depth_rel_error": 0.012465510883120126,
+        "lm_depth_bounded": true,
+        "lm_rmse_px": 0.37868496468109386
+      },
+      "id": {
+        "kappa_H": 134794.0930819186,
+        "min_singular_value": 0.007206733594506568,
+        "nullity": 0,
+        "rank_S": 27,
+        "nullity_S": 0,
+        "sigma_depth_m": 0.227561303846657,
+        "sigma_point_params": [
+          0.0006781568413036061,
+          0.00048017102625947733,
+          0.0016710016076920586
+        ],
+        "lm_status": "converged",
+        "lm_iter": 8,
+        "lm_depth_rel_error": 0.012465510846803992,
+        "lm_depth_bounded": true,
+        "lm_rmse_px": 0.37868496468109814
+      },
+      "ir": {
+        "kappa_H": 272344.8238799482,
+        "min_singular_value": 0.00811193821859913,
+        "nullity": 0,
+        "rank_S": 27,
+        "nullity_S": 0,
+        "sigma_depth_m": 0.22756130384661924,
+        "sigma_point_params": [
+          0.0013192590521242332,
+          0.0005988275605736737,
+          0.001580286832268189
+        ],
+        "lm_status": "converged",
+        "lm_iter": 8,
+        "lm_depth_rel_error": 0.012465510830854676,
+        "lm_depth_bounded": true,
+        "lm_rmse_px": 0.3786849646810934
+      },
+      "pa": {
+        "kappa_H": 689657.5273215016,
+        "min_singular_value": 0.002649207074519407,
+        "nullity": 0,
+        "rank_S": 27,
+        "nullity_S": 0,
+        "sigma_depth_m": 0.22756130384621026,
+        "sigma_point_params": [
+          0.006506686397857014,
+          0.003340508005372195,
+          0.001844294357794955
+        ],
+        "dd_domega": 150.42206754515757,
+        "lm_status": "converged",
+        "lm_iter": 7,
+        "lm_depth_rel_error": 0.012465511438428814,
+        "lm_depth_bounded": true,
+        "lm_rmse_px": 0.37868496468109175
+      }
+    },
+    {
+      "beta_deg": 8.0,
+      "xyz": {
+        "kappa_H": 371778534.14962673,
+        "min_singular_value": 2.247882366264702e-06,
+        "nullity": 0,
+        "rank_S": 27,
+        "nullity_S": 0,
+        "sigma_depth_m": 0.5736580513329991,
+        "sigma_point_params": [
+          0.08494826536953272,
+          0.005769780510226255,
+          0.567390082370132
+        ],
+        "lm_status": "converged",
+        "lm_iter": 10,
+        "lm_depth_rel_error": 0.02572945907687855,
+        "lm_depth_bounded": true,
+        "lm_rmse_px": 0.37901883658348295
+      },
+      "id": {
+        "kappa_H": 137273.28046282096,
+        "min_singular_value": 0.007074865164175572,
+        "nullity": 0,
+        "rank_S": 27,
+        "nullity_S": 0,
+        "sigma_depth_m": 0.5736580513333089,
+        "sigma_point_params": [
+          0.000680649277308633,
+          0.0004855402872172299,
+          0.004018034832893807
+        ],
+        "lm_status": "converged",
+        "lm_iter": 8,
+        "lm_depth_rel_error": 0.02572945558156325,
+        "lm_depth_bounded": true,
+        "lm_rmse_px": 0.37901883658348623
+      },
+      "ir": {
+        "kappa_H": 280962.4506788019,
+        "min_singular_value": 0.00786294954126702,
+        "nullity": 0,
+        "rank_S": 27,
+        "nullity_S": 0,
+        "sigma_depth_m": 0.5736580513333309,
+        "sigma_point_params": [
+          0.0034547986586632843,
+          0.0006674656779767614,
+          0.003983736467592574
+        ],
+        "lm_status": "converged",
+        "lm_iter": 8,
+        "lm_depth_rel_error": 0.025729456843448514,
+        "lm_depth_bounded": true,
+        "lm_rmse_px": 0.3790188365834939
+      },
+      "pa": {
+        "kappa_H": 981642.9873492741,
+        "min_singular_value": 0.0018608606281134063,
+        "nullity": 0,
+        "rank_S": 27,
+        "nullity_S": 0,
+        "sigma_depth_m": 0.5736580513327384,
+        "sigma_point_params": [
+          0.016829228926405627,
+          0.0033506144323592487,
+          0.0019217896954741088
+        ],
+        "dd_domega": 360.9430702030309,
+        "lm_status": "converged",
+        "lm_iter": 7,
+        "lm_depth_rel_error": 0.025729456959906024,
+        "lm_depth_bounded": true,
+        "lm_rmse_px": 0.3790188365834909
+      }
+    },
+    {
+      "beta_deg": 3.0,
+      "xyz": {
+        "kappa_H": 2029768363.230871,
+        "min_singular_value": 4.117100723654118e-07,
+        "nullity": 0,
+        "rank_S": 27,
+        "nullity_S": 0,
+        "sigma_depth_m": 1.5338680980923873,
+        "sigma_point_params": [
+          0.08559863997922716,
+          0.005831781482750743,
+          1.5314994801706925
+        ],
+        "lm_status": "converged",
+        "lm_iter": 15,
+        "lm_depth_rel_error": 0.0648286800002215,
+        "lm_depth_bounded": true,
+        "lm_rmse_px": 0.37915338130475407
+      },
+      "id": {
+        "kappa_H": 182984.9843818428,
+        "min_singular_value": 0.0053073068275911045,
+        "nullity": 0,
+        "rank_S": 27,
+        "nullity_S": 0,
+        "sigma_depth_m": 1.5338680980918404,
+        "sigma_point_params": [
+          0.0006811350014130344,
+          0.00048664872539406454,
+          0.010664624019856527
+        ],
+        "lm_status": "converged",
+        "lm_iter": 11,
+        "lm_depth_rel_error": 0.06482869188758104,
+        "lm_depth_bounded": true,
+        "lm_rmse_px": 0.379153381304746
+      },
+      "ir": {
+        "kappa_H": 414471.14961334126,
+        "min_singular_value": 0.005330133457837356,
+        "nullity": 0,
+        "rank_S": 27,
+        "nullity_S": 0,
+        "sigma_depth_m": 1.5338680980917596,
+        "sigma_point_params": [
+          0.00928581084815296,
+          0.0006792693370099976,
+          0.010651861792303888
+        ],
+        "lm_status": "converged",
+        "lm_iter": 11,
+        "lm_depth_rel_error": 0.06482869954036315,
+        "lm_depth_bounded": true,
+        "lm_rmse_px": 0.3791533813047452
+      },
+      "pa": {
+        "kappa_H": 4085427.811494513,
+        "min_singular_value": 0.00044711428982856943,
+        "nullity": 0,
+        "rank_S": 27,
+        "nullity_S": 0,
+        "sigma_depth_m": 1.5338680980887829,
+        "sigma_point_params": [
+          0.045145775701502196,
+          0.003352259942002875,
+          0.0019359516247252006
+        ],
+        "dd_domega": 955.9945925825299,
+        "lm_status": "converged",
+        "lm_iter": 12,
+        "lm_depth_rel_error": 0.06482868800639323,
+        "lm_depth_bounded": true,
+        "lm_rmse_px": 0.3791533813047538
+      }
+    },
+    {
+      "beta_deg": 1.0,
+      "xyz": {
+        "kappa_H": 17771963352.69171,
+        "min_singular_value": 4.7021827854668496e-08,
+        "nullity": 0,
+        "rank_S": 27,
+        "nullity_S": 0,
+        "sigma_depth_m": 4.6038642494248485,
+        "sigma_point_params": [
+          0.08570462482963176,
+          0.005842191384084663,
+          4.60307370501397
+        ],
+        "lm_status": "converged",
+        "lm_iter": 32,
+        "lm_depth_rel_error": 0.29810010427397,
+        "lm_depth_bounded": true,
+        "lm_rmse_px": 0.37923388248098405
+      },
+      "id": {
+        "kappa_H": 1029768.9052681566,
+        "min_singular_value": 0.0009430780843329764,
+        "nullity": 0,
+        "rank_S": 27,
+        "nullity_S": 0,
+        "sigma_depth_m": 4.603864249426008,
+        "sigma_point_params": [
+          0.0006812472266886191,
+          0.0004869234428058352,
+          0.03197552893229845
+        ],
+        "lm_status": "converged",
+        "lm_iter": 31,
+        "lm_depth_rel_error": 0.2981024086425951,
+        "lm_depth_bounded": true,
+        "lm_rmse_px": 0.3792338824809575
+      },
+      "ir": {
+        "kappa_H": 2496164.991846021,
+        "min_singular_value": 0.0008850318289415924,
+        "nullity": 0,
+        "rank_S": 27,
+        "nullity_S": 0,
+        "sigma_depth_m": 4.60386424942568,
+        "sigma_point_params": [
+          0.027895825355463463,
+          0.000681039727986711,
+          0.03197127950990054
+        ],
+        "lm_status": "converged",
+        "lm_iter": 35,
+        "lm_depth_rel_error": 0.29810292691766177,
+        "lm_depth_bounded": true,
+        "lm_rmse_px": 0.3792338824809615
+      },
+      "pa": {
+        "kappa_H": 33926271.24752442,
+        "min_singular_value": 5.384164290678838e-05,
+        "nullity": 0,
+        "rank_S": 27,
+        "nullity_S": 0,
+        "sigma_depth_m": 4.603864249418216,
+        "sigma_point_params": [
+          0.13558463281665473,
+          0.0033523874007949967,
+          0.001938007106333687
+        ],
+        "dd_domega": 2865.1438697544922,
+        "lm_status": "converged",
+        "lm_iter": 61,
+        "lm_depth_rel_error": 150326248799.376,
+        "lm_depth_bounded": false,
+        "lm_rmse_px": 0.39565808375252814
+      }
+    },
+    {
+      "beta_deg": 0.3,
+      "xyz": {
+        "kappa_H": 196897496421.75504,
+        "min_singular_value": 4.244184794848879e-09,
+        "nullity": 0,
+        "rank_S": 27,
+        "nullity_S": 0,
+        "sigma_depth_m": 15.34750495479895,
+        "sigma_point_params": [
+          0.08571998376673329,
+          0.005843888288460663,
+          15.34726774556249
+        ],
+        "lm_status": "behind_camera",
+        "lm_iter": 52,
+        "lm_depth_rel_error": 0.8324916366428651,
+        "lm_depth_bounded": true,
+        "lm_rmse_px": 0.3647600155019898
+      },
+      "id": {
+        "kappa_H": 11065475.495105777,
+        "min_singular_value": 8.776412543243062e-05,
+        "nullity": 0,
+        "rank_S": 27,
+        "nullity_S": 0,
+        "sigma_depth_m": 15.347504954796165,
+        "sigma_point_params": [
+          0.0006812757949082695,
+          0.00048699736634435245,
+          0.10658117018964648
+        ],
+        "lm_status": "converged",
+        "lm_iter": 39,
+        "lm_depth_rel_error": 127421663498.38585,
+        "lm_depth_bounded": false,
+        "lm_rmse_px": 0.37900085448065995
+      },
+      "ir": {
+        "kappa_H": 26857328.144940898,
+        "min_singular_value": 8.225633257581089e-05,
+        "nullity": 0,
+        "rank_S": 27,
+        "nullity_S": 0,
+        "sigma_depth_m": 15.347504954796175,
+        "sigma_point_params": [
+          0.09300879577942535,
+          0.0006812571175162219,
+          0.10657989551941789
+        ],
+        "lm_status": "converged",
+        "lm_iter": 49,
+        "lm_depth_rel_error": 0.8324907828133389,
+        "lm_depth_bounded": true,
+        "lm_rmse_px": 0.3647658298319787
+      },
+      "pa": {
+        "kappa_H": 373605796.8384787,
+        "min_singular_value": 4.88923169528673e-06,
+        "nullity": 0,
+        "rank_S": 27,
+        "nullity_S": 0,
+        "sigma_depth_m": 15.347504954749667,
+        "sigma_point_params": [
+          0.4520423005120636,
+          0.0033523581019210833,
+          0.001938225605161828
+        ],
+        "dd_domega": 9549.403050881207,
+        "lm_status": "stalled",
+        "lm_iter": 27,
+        "lm_depth_rel_error": 0.832488897998607,
+        "lm_depth_bounded": true,
+        "lm_rmse_px": 0.3653412224560383
+      }
+    },
+    {
+      "beta_deg": 0.1,
+      "xyz": {
+        "kappa_H": 1771660349900.2944,
+        "min_singular_value": 4.716870450174755e-10,
+        "nullity": 0,
+        "rank_S": 27,
+        "nullity_S": 0,
+        "sigma_depth_m": 46.04323182860611,
+        "sigma_point_params": [
+          0.08572229097152356,
+          0.005844187714716796,
+          46.04315275639017
+        ],
+        "lm_status": "behind_camera",
+        "lm_iter": 50,
+        "lm_depth_rel_error": 0.8324776775514113,
+        "lm_depth_bounded": true,
+        "lm_rmse_px": 0.3656409093781456
+      },
+      "id": {
+        "kappa_H": 99320926.09979792,
+        "min_singular_value": 9.777916024792448e-06,
+        "nullity": 0,
+        "rank_S": 27,
+        "nullity_S": 0,
+        "sigma_depth_m": 46.043231828582485,
+        "sigma_point_params": [
+          0.0006812829490244735,
+          0.00048701638466084593,
+          0.3197450903619118
+        ],
+        "lm_status": "stalled",
+        "lm_iter": 34,
+        "lm_depth_rel_error": 119009688613.37465,
+        "lm_depth_bounded": false,
+        "lm_rmse_px": 0.37944638307855333
+      },
+      "ir": {
+        "kappa_H": 241079494.3787634,
+        "min_singular_value": 9.163721283660262e-06,
+        "nullity": 0,
+        "rank_S": 27,
+        "nullity_S": 0,
+        "sigma_depth_m": 46.04323182858012,
+        "sigma_point_params": [
+          0.27903955061316743,
+          0.0006812808737200388,
+          0.31974466547625086
+        ],
+        "lm_status": "converged",
+        "lm_iter": 40,
+        "lm_depth_rel_error": 0.8324758750550082,
+        "lm_depth_bounded": true,
+        "lm_rmse_px": 0.3656584903328855
+      },
+      "pa": {
+        "kappa_H": 3359978046.321586,
+        "min_singular_value": 5.43647956994475e-07,
+        "nullity": 0,
+        "rank_S": 27,
+        "nullity_S": 0,
+        "sigma_depth_m": 46.043231828498314,
+        "sigma_point_params": [
+          1.356184667759994,
+          0.0033523426670328043,
+          0.0019382401538168025
+        ],
+        "dd_domega": 28647.925244913058,
+        "lm_status": "stalled",
+        "lm_iter": 31,
+        "lm_depth_rel_error": 0.8324781216202721,
+        "lm_depth_bounded": true,
+        "lm_rmse_px": 0.3656863749245054
+      }
+    }
+  ],
+  "S3_exact_alignment": {
+    "probe_depth_true": 12.0,
+    "rows": {
+      "xyz": {
+        "kappa_H": Infinity,
+        "min_singular_value": 0.0,
+        "nullity": 1,
+        "rank_S": 27,
+        "nullity_S": 0,
+        "sigma_depth_m": null,
+        "gn_direct_solve": "singular",
+        "cond_S": null
+      },
+      "id": {
+        "kappa_H": Infinity,
+        "min_singular_value": 0.0,
+        "nullity": 1,
+        "rank_S": 27,
+        "nullity_S": 0,
+        "sigma_depth_m": null,
+        "gn_direct_solve": "singular",
+        "cond_S": null
+      },
+      "ir": {
+        "kappa_H": 1.754553887090783e+35,
+        "min_singular_value": 1.259115096049219e-32,
+        "nullity": 2,
+        "rank_S": 27,
+        "nullity_S": 0,
+        "sigma_depth_m": null,
+        "gn_direct_solve": "ok",
+        "cond_S": 69531.42213531035
+      },
+      "pa": {
+        "status": "chart_undefined",
+        "reason": "sin(omega)=0 at exact alignment"
+      }
+    }
+  },
+  "S4_damping_metric": [
+    {
+      "lambda": 1e-08,
+      "gn_step_norm_xyz": 4.284342425549214,
+      "same_lambda_everywhere": {
+        "id": 0.0010116439227179665,
+        "ir": 0.0010120818265851278,
+        "pa": 0.0010071128279477816
+      },
+      "pullback_metric": {
+        "id": 2.458750514209906e-11,
+        "ir": 2.047658053851803e-11,
+        "pa": 9.292277829743456e-12
+      },
+      "step_norm": {
+        "xyz": 4.284342425549214,
+        "id": 4.286114867285467,
+        "ir": 4.2861172707188855,
+        "pa": 4.286093127417719
+      }
+    },
+    {
+      "lambda": 1e-06,
+      "gn_step_norm_xyz": 4.147423450955295,
+      "same_lambda_everywhere": {
+        "id": 0.0745505039494026,
+        "ir": 0.07462677796748061,
+        "pa": 0.07382108881736577
+      },
+      "pullback_metric": {
+        "id": 1.3735528483812169e-11,
+        "ir": 1.7740806028386478e-11,
+        "pa": 2.316681308324305e-11
+      },
+      "step_norm": {
+        "xyz": 4.147423450955295,
+        "id": 4.285995942566644,
+        "ir": 4.2862362587257445,
+        "pa": 4.283830192164397
+      }
+    },
+    {
+      "lambda": 0.0001,
+      "gn_step_norm_xyz": 3.499145082617749,
+      "same_lambda_everywhere": {
+        "id": 0.5901292845564532,
+        "ir": 0.6029606530606183,
+        "pa": 0.5001191278254853
+      },
+      "pullback_metric": {
+        "id": 5.244121937974992e-12,
+        "ir": 1.0945300028337661e-11,
+        "pa": 2.1881096783098027e-12
+      },
+      "step_norm": {
+        "xyz": 3.499145082617749,
+        "id": 4.274267534349559,
+        "ir": 4.298037693118185,
+        "pa": 4.1201495721937595
+      }
+    },
+    {
+      "lambda": 0.01,
+      "gn_step_norm_xyz": 2.848681750270135,
+      "same_lambda_everywhere": {
+        "id": 0.7835085297005837,
+        "ir": 1.2719594565976624,
+        "pa": 0.8559314810761096
+      },
+      "pullback_metric": {
+        "id": 1.5899828146722036e-11,
+        "ir": 2.213389052709205e-12,
+        "pa": 9.677947501777795e-12
+      },
+      "step_norm": {
+        "xyz": 2.848681750270135,
+        "id": 3.8246837502554563,
+        "ir": 4.780221912528671,
+        "pa": 3.9577107506371156
+      }
+    },
+    {
+      "lambda": 1.0,
+      "gn_step_norm_xyz": 1.0062854510668784,
+      "same_lambda_everywhere": {
+        "id": 4.1504564652486176,
+        "ir": 2.997939365808706,
+        "pa": 4.882773292458718
+      },
+      "pullback_metric": {
+        "id": 2.644698458611355e-13,
+        "ir": 6.026377766331917e-13,
+        "pa": 4.703928716720067e-13
+      },
+      "step_norm": {
+        "xyz": 1.0062854510668784,
+        "id": 4.518286073430334,
+        "ir": 3.5525727460775145,
+        "pa": 5.259706463373727
+      }
+    }
+  ],
+  "S5_depth_blindness": [
+    {
+      "beta_deg": 3.0,
+      "depth_ratio": 1.01,
+      "rmse_px": 0.035371283604592026,
+      "max_px": 0.06226286553870364
+    },
+    {
+      "beta_deg": 3.0,
+      "depth_ratio": 1.05,
+      "rmse_px": 0.16906042126926774,
+      "max_px": 0.29721342392650607
+    },
+    {
+      "beta_deg": 3.0,
+      "depth_ratio": 1.2,
+      "rmse_px": 0.5803403777098086,
+      "max_px": 1.0162399518486056
+    },
+    {
+      "beta_deg": 3.0,
+      "depth_ratio": 1.5,
+      "rmse_px": 1.1303960959190793,
+      "max_px": 1.968866829761315
+    },
+    {
+      "beta_deg": 3.0,
+      "depth_ratio": 2.0,
+      "rmse_px": 1.6526748182030175,
+      "max_px": 2.863672299306539
+    },
+    {
+      "beta_deg": 3.0,
+      "depth_ratio": 5.0,
+      "rmse_px": 2.52973439469894,
+      "max_px": 4.344545641118403
+    },
+    {
+      "beta_deg": 1.0,
+      "depth_ratio": 1.01,
+      "rmse_px": 0.0117617526652083,
+      "max_px": 0.020702112196693823
+    },
+    {
+      "beta_deg": 1.0,
+      "depth_ratio": 1.05,
+      "rmse_px": 0.05621693566868686,
+      "max_px": 0.09882315557604819
+    },
+    {
+      "beta_deg": 1.0,
+      "depth_ratio": 1.2,
+      "rmse_px": 0.19298353545097965,
+      "max_px": 0.33791002536024023
+    },
+    {
+      "beta_deg": 1.0,
+      "depth_ratio": 1.5,
+      "rmse_px": 0.3759104204401302,
+      "max_px": 0.6546970548590609
+    },
+    {
+      "beta_deg": 1.0,
+      "depth_ratio": 2.0,
+      "rmse_px": 0.5496122539114787,
+      "max_px": 0.9522816799551904
+    },
+    {
+      "beta_deg": 1.0,
+      "depth_ratio": 5.0,
+      "rmse_px": 0.841335606261246,
+      "max_px": 1.4448287506601196
+    },
+    {
+      "beta_deg": 0.3,
+      "depth_ratio": 1.01,
+      "rmse_px": 0.003527549219126154,
+      "max_px": 0.006208856823747971
+    },
+    {
+      "beta_deg": 0.3,
+      "depth_ratio": 1.05,
+      "rmse_px": 0.016860430637693116,
+      "max_px": 0.029638501579325616
+    },
+    {
+      "beta_deg": 0.3,
+      "depth_ratio": 1.2,
+      "rmse_px": 0.05787928315133105,
+      "max_px": 0.10134451573790655
+    },
+    {
+      "beta_deg": 0.3,
+      "depth_ratio": 1.5,
+      "rmse_px": 0.1127428724248647,
+      "max_px": 0.19635490156217186
+    },
+    {
+      "beta_deg": 0.3,
+      "depth_ratio": 2.0,
+      "rmse_px": 0.1648401016487293,
+      "max_px": 0.2856069960759859
+    },
+    {
+      "beta_deg": 0.3,
+      "depth_ratio": 5.0,
+      "rmse_px": 0.25233565194922913,
+      "max_px": 0.4333344174872757
+    },
+    {
+      "beta_deg": 0.1,
+      "depth_ratio": 1.01,
+      "rmse_px": 0.001175821128340029,
+      "max_px": 0.0020695668847814635
+    },
+    {
+      "beta_deg": 0.1,
+      "depth_ratio": 1.05,
+      "rmse_px": 0.005620007310542228,
+      "max_px": 0.009879253107788599
+    },
+    {
+      "beta_deg": 0.1,
+      "depth_ratio": 1.2,
+      "rmse_px": 0.019292632141219027,
+      "max_px": 0.0337806705077669
+    },
+    {
+      "beta_deg": 0.1,
+      "depth_ratio": 1.5,
+      "rmse_px": 0.03758007111050883,
+      "max_px": 0.06545004549115152
+    },
+    {
+      "beta_deg": 0.1,
+      "depth_ratio": 2.0,
+      "rmse_px": 0.05494542391140734,
+      "max_px": 0.0952000612258274
+    },
+    {
+      "beta_deg": 0.1,
+      "depth_ratio": 5.0,
+      "rmse_px": 0.08410997873824742,
+      "max_px": 0.1444414597910667
+    }
+  ]
+}
