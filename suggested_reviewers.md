@@ -64,8 +64,9 @@ optimization for structure-from-motion.*
 ## Who was deliberately left out, and why
 
 **Prof Lei Yan and Dr Yanbiao Sun (Peking University).** Both are ParallaxBA co-authors
-and both are co-authors of Zuo et al. (2023), the study this paper revises. Lei Yan was the
-author's doctoral supervisor. Suggesting either would be an immediate conflict.
+and both are co-authors of Zuo et al. (2023), the study this paper revises. Lei Yan has also
+been the corresponding author on much of the author's earlier work. Suggesting either would
+be an immediate conflict.
 
 **Prof Shoudong Huang (UTS).** ParallaxBA co-author and therefore a natural name, but he
 has served as an Associate Editor of IJRR (listed 2024–present on his own page; the UTS
