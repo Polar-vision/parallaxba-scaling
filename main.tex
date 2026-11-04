@@ -9,7 +9,10 @@
 \usepackage{microtype}
 \usepackage{enumitem}
 \usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
-\usepackage[numbers,sort&compress]{natbib}
+\usepackage[authoryear,round,sort&compress]{natbib}
+% In author-year mode natbib makes \cite behave like \citet; bind it to the
+% parenthetical form so that only explicit \citet produces "Author (Year)".
+\let\cite\citep
 
 \newtheorem{theorem}{Theorem}
 \newtheorem{proposition}[theorem]{Proposition}
@@ -26,9 +29,20 @@
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\T}{\mathsf{T}}
 
+% =====================================================================
+% BEFORE UPLOADING TO SCHOLARONE
+%   1. Replace the \author block below with names, affiliations, the
+%      corresponding author's e-mail, and ORCID iDs if available.
+%   2. Check the Funding statement in the back matter.
+%   3. Complete Acknowledgements and Author contributions if applicable.
+%   4. Enter three suggested reviewers in the submission system, at least
+%      two of them drawn from this bibliography.
+% =====================================================================
 \title{What ParallaxBA Actually Buys:\\
 Better Scaling, Not More Information}
-\author{Anonymous manuscript draft}
+\author{%
+  \textbf{[Author names and affiliations to be inserted before submission]}\thanks{Corresponding author: \texttt{[e-mail address]}}
+}
 \date{\today}
 
 \begin{document}
@@ -38,8 +52,11 @@ Better Scaling, Not More Information}
 Parallax-angle bundle adjustment (ParallaxBA) rests on a chain of inferences: from a positive-definite two-dimensional information matrix to three-dimensional identifiability, and from chart conditioning to problem conditioning and convergence. Checked one at a time, the links do not all hold. The two-dimensional matrix is positive definite, and so is its three-dimensional counterpart on the regular domain, but neither makes depth identifiable: the depth-to-parallax map is non-injective under aligned motion, and at exact collinearity the scaled-ray observation returns the zero vector. The step from chart conditioning to convergence does not follow, because for any chart that smoothly reparameterizes the point coordinates the Schur complement a solver factorizes is identical elementwise --- it is $A^{\T}(I-P)A$, with $P$ projecting onto the column space the points already span --- so only the damping metric and the domain remain free to affect the solve, and neither carries information. What the chart does buy is real: a bounded chart Hessian where XYZ grows as $\omega^{-2}$, and a trust region stretched along depth by $d/B$ at $\beta=\pi/2$. Four charts spanning seven orders of magnitude in $\kappa(H)$ return the same physical Gauss--Newton iterates to $4\times10^{-14}$ and the same depth Cram\'er--Rao bound to $3\times10^{-10}$; on a real handheld sequence the reduced system agrees to $9\times10^{-14}$, and a re-run of the experiment that indicts inverse depth, given the Euclidean control it omits, fails for all three depth-coordinate charts at one threshold. This is a refutation of an argument, not of a method.
 \end{abstract}
 
+\vspace{0.6em}
+\noindent\textbf{Keywords:} bundle adjustment, parallax parametrization, point coordinates, Schur complement, conditioning, identifiability
+
 \section{Introduction}
-Bundle adjustment (BA) estimates camera poses and scene structure by minimizing reprojection error \cite{triggs1999bundle,hartley2004multiple}. Although the physical objective is shared, the coordinates used for object points can change a numerical solver's trajectory so drastically that the choice is often treated as a modelling decision rather than an implementation detail. Zhao et al. \cite{zhao2015parallaxba} proposed ParallaxBA, representing a point by a main-anchor bearing and the parallax angle at an associate anchor. Their analysis attributes slow or failed convergence of XYZ and inverse-depth BA to singular or ill-conditioned normal equations and flat objective regions, and reports substantial empirical improvements.
+Bundle adjustment (BA) estimates camera poses and scene structure by minimizing reprojection error \cite{triggs1999bundle,hartley2004multiple}, and it remains the back end of most modern localization and mapping systems \cite{cadena2016slam}. Although the physical objective is shared, the coordinates used for object points can change a numerical solver's trajectory so drastically that the choice is often treated as a modelling decision rather than an implementation detail: inverse depth accompanies the large depth uncertainty of monocular initialization \cite{civera2008inverse} and of sparse direct formulations \cite{engel2018dso}, XYZ the incremental reconstructions of structure-from-motion \cite{snavely2006photo,schonberger2016sfm}. \citet{zhao2015parallaxba} proposed ParallaxBA, representing a point by a main-anchor bearing and the parallax angle at an associate anchor. Their analysis attributes slow or failed convergence of XYZ and inverse-depth BA to singular or ill-conditioned normal equations and flat objective regions, and reports substantial empirical improvements.
 
 This paper shows that the choice of point coordinates cannot change the problem a solver converges to, only the path it takes, and that this distinction decides a specific published disagreement. The claim under test is therefore narrow, and it is worth stating what it is not. It is not that ParallaxBA performs badly: we confirm, and give a proof of, two mechanisms by which it genuinely helps. It is that the argument offered for it does not support the conclusion drawn, because the quantity it computes is a property of the coordinates and the quantity it concludes about is a property of the problem. Three different claims are routinely conflated at this point:
 \begin{enumerate}[leftmargin=2em]
@@ -49,10 +66,10 @@ This paper shows that the choice of point coordinates cannot change the problem 
 \end{enumerate}
 The first does not imply the second unless the coordinate transformation is locally regular. Neither automatically implies the third, which also depends on damping, scaling, initialization, stopping rules, linear algebra, and the iteration budget.
 
-The empirical literature is likewise mixed. The original ParallaxBA paper reports better convergence in most of its experiments while explicitly disclaiming universal convergence guarantees \cite{zhao2015parallaxba}. Zuo et al. \cite{zuo2023applicability} subsequently questioned its suitability for three-dimensional short-baseline photography. Manifold-based PMBA extends the representation and introduces a different objective and initialization scheme \cite{liu2018pmba}; it is not covered by counterexamples directed at the original ParallaxBA equation. A useful analysis must therefore avoid both overstatements: ``parallax eliminates the relevant singularities everywhere'' and ``parallax is generally ineffective in three-dimensional BA.''
+The empirical literature is likewise mixed. The original ParallaxBA paper reports better convergence in most of its experiments while explicitly disclaiming universal convergence guarantees \cite{zhao2015parallaxba}. \citet{zuo2023applicability} subsequently questioned its suitability for three-dimensional short-baseline photography. Manifold-based PMBA extends the representation and introduces a different objective and initialization scheme \cite{liu2018pmba}; it is not covered by counterexamples directed at the original ParallaxBA equation. A useful analysis must therefore avoid both overstatements: ``parallax eliminates the relevant singularities everywhere'' and ``parallax is generally ineffective in three-dimensional BA.''
 
 \subsection{What is inherited, and what is new}
-The invariance of the normal equations under reparameterization is classical. \citet{triggs1999bundle} present the Schur complement as the object a bundle adjuster actually factorizes and observe that the choice of point coordinates changes the conditioning of that reduced system without changing its stationary points; \citet{bartoli2003gauge} show that gauge-dependent damping, rather than the linearization, is what makes Levenberg--Marquardt behave differently in different gauges, and construct a gauge-invariant alternative.
+The invariance of the normal equations under reparameterization is classical. \citet{triggs1999bundle} present the Schur complement as the object a bundle adjuster actually factorizes and observe that the choice of point coordinates changes the conditioning of that reduced system without changing its stationary points; \citet{bartoli2003gauge} shows that gauge-dependent damping, rather than the linearization, is what makes Levenberg--Marquardt behave differently in different gauges, and construct a gauge-invariant alternative.
 
 We inherit both observations and claim neither. What is new is narrower, and we argue that it is decisive. First, the charts compared here depend on the \emph{optimized anchor poses}, so the change of variables is state-dependent and the classical fixed-reparameterization argument does not apply directly; Theorem~\ref{thm:main} shows that the Schur complement is nevertheless identical elementwise. Second, we give the rank bookkeeping $\rank\mathcal S=\rank H-\rank J_X$, which makes the consequence explicit: a singular point block is neither necessary nor sufficient for a singular reduced camera system, so point-block conditioning cannot support any conclusion about BA singularity in either direction. Third, we apply this to a published argument and to the experiments offered in its support, including a re-run of the experiment that indicts inverse depth with the control it omits.
 
@@ -68,13 +85,15 @@ This paper offers a mathematical and empirical reconciliation. The mathematics h
 \end{itemize}
 
 \section{Related Work}
-Inverse-depth parametrization was developed for undelayed monocular EKF initialization and for representing large depth uncertainty, including points at infinity \cite{civera2008inverse}. Optical-axis inverse depth $1/z$ and inverse Euclidean range $1/\|x\|$ are distinct coordinates, and the four charts compared below include both, so the ambiguity between them can be kept out of the experiments.
+Inverse-depth parametrization was developed for undelayed monocular EKF initialization and for representing large depth uncertainty, including points at infinity \cite{civera2008inverse}. It remains the standard choice wherever that uncertainty is the organizing problem, from filter-based monocular SLAM \cite{strasdat2010scaledrift,murartal2015orbslam} to sparse direct formulations \cite{engel2018dso}. Optical-axis inverse depth $1/z$ and inverse Euclidean range $1/\|x\|$ are distinct coordinates, and the four charts compared below include both, so the ambiguity between them can be kept out of the experiments.
 
-ParallaxBA instead uses two anchor cameras and a parallax angle \cite{zhao2015parallaxba}. Zuo et al. \cite{zuo2023applicability} extended parts of the sensitivity discussion to three dimensions and reported unfavorable short-baseline simulations and two small real SfM experiments. Their work is an important precursor: we do not claim to be the first to question a two-dimensional-to-three-dimensional extrapolation. Our distinct focus is the exact scaled-ray domain, chart regularity, matched initial physical states, and a much larger controlled BA comparison.
+ParallaxBA instead uses two anchor cameras and a parallax angle \cite{zhao2015parallaxba}, a representation its authors reached from a linear formulation of the same estimation problem \cite{zhao2014linear}. \citet{zuo2023applicability} extended parts of the sensitivity discussion to three dimensions and reported unfavorable short-baseline simulations and two small real SfM experiments. Their work is an important precursor: we do not claim to be the first to question a two-dimensional-to-three-dimensional extrapolation. Our distinct focus is the exact scaled-ray domain, chart regularity, matched initial physical states, and a much larger controlled BA comparison.
 
 PMBA uses manifold ray coordinates and a modified observation-ray objective \cite{liu2018pmba}. Those changes can alter the relevant singular sets. The counterexample in Section~\ref{sec:zero-ray} is therefore specific to the original ParallaxBA scaled-ray equation and implementations that reproduce it.
 
-Gauge-dependent LM damping has long been studied in BA. Bartoli \cite{bartoli2003gauge} showed that a sufficiently general damping matrix can reproduce a gauge transformation and enable gauge-invariant iterations. Our pullback-metric statement is an application of the same general optimization principle, rather than a new claim that arbitrary damped iterations are coordinate invariant. Standard treatments of GN/LM similarly emphasize the role of the trust-region metric \cite{nocedal2006numerical}.
+Whatever the chart, the same machinery consumes it. Production bundle adjusters eliminate the points and factorize a reduced camera system \cite{lourakis2009sba}, whether through a general graph-optimization front end \cite{kummerle2011g2o} or a differentiable least-squares library \cite{ceres2023}. That shared architecture is what makes the question of this paper well posed, and it is also why an answer that holds only for one implementation would be of little use.
+
+Gauge-dependent LM damping has long been studied in BA. The algorithm itself dates to \citet{marquardt1963}, with the trust-region reading and implementation guidance of \citet{more1978}; \citet{lourakis2005lm} compare it against alternatives for bundle adjustment specifically. \citet{bartoli2003gauge} showed that a sufficiently general damping matrix can reproduce a gauge transformation and enable gauge-invariant iterations. Our pullback-metric statement is an application of the same general optimization principle, rather than a new claim that arbitrary damped iterations are coordinate invariant. Standard treatments of GN/LM similarly emphasize the role of the trust-region metric \cite{nocedal2006numerical}.
 
 \section{A Reparameterization Framework}
 \label{sec:framework}
@@ -334,27 +353,9 @@ G\delta\xi+D_q\delta q_q=-(J_X^{\T}J_X)^{+}J_X^{\T}(r+A\delta\xi)=\delta q_x,
 so $X_{\rm new}=\Phi_{\xi+\delta\xi}(q+\delta q_q)=X+\delta q_x$, and the full undamped step is pointwise identical.
 
 \paragraph{An exactly collinear point.}
-Take four cameras at $(0,0,0)$, $(1,0,0)$, $(0,1,0)$, $(0,0,1)$, five generic points, and one point $X_5=(2,0,0)$ on the ray through the first two centres, observed only by them. Table~\ref{tab:collinear} confirms \eqref{eq:rank-identity} and Corollary~\ref{cor:fates}: the new point adds three columns of which two are independent (its block has singular values $1.149$, $1.133$, $2.36\times10^{-18}$), so $\rank J_X$ and $\rank H$ each rise by two, $\dim\ker H$ rises by one, and $\rank\mathcal S$ does not move. The extra null vector is a pure point direction: the pose part of the eight-dimensional null space has rank seven, and the principal angle between the null spaces of $\mathcal S$ before and after is zero.
+Take four cameras at $(0,0,0)$, $(1,0,0)$, $(0,1,0)$, $(0,0,1)$, five generic points, and one point $X_5=(2,0,0)$ on the ray through the first two centres, observed only by them. Supplementary Table~S1 confirms \eqref{eq:rank-identity} and Corollary~\ref{cor:fates}: the new point adds three columns of which two are independent (its block has singular values $1.149$, $1.133$, $2.36\times10^{-18}$), so $\rank J_X$ and $\rank H$ each rise by two, $\dim\ker H$ rises by one, and $\rank\mathcal S$ does not move. The extra null vector is a pure point direction: the pose part of the eight-dimensional null space has rank seven, and the principal angle between the null spaces of $\mathcal S$ before and after is zero.
 
-\begin{table}[t]
-\centering
-\caption{Rank bookkeeping for a BA problem with and without an exactly collinear point. The extra point adds one null direction to $H$ but none to $\mathcal S$, as predicted by \eqref{eq:rank-identity}.}
-\label{tab:collinear}
-\begin{tabular}{lrrc}
-\toprule
-Quantity & Base & With $X_5$ & Change \\
-\midrule
-Variables & 39 & 42 & $+3$ \\
-$\rank H$ & 32 & 34 & $+2$ \\
-$\dim\ker H$ & 7 & 8 & $+1$ \\
-$\rank J_X$ & 15 & 17 & $+2$ \\
-$\rank\mathcal S$ & 17 & 17 & $0$ \\
-$\dim\ker\mathcal S$ & 7 & 7 & $0$ \\
-$\rank H-\rank J_X$ & 17 & 17 & $0$ \\
-Rank of the $X_5$ block & --- & 2 & --- \\
-\bottomrule
-\end{tabular}
-\end{table}
+% moved to the supplementary material as Table S1
 
 The same configuration exposes the cost of the chart. XYZ keeps a well-defined, if rank-deficient, block. The parallax chart cannot represent $X_5$ at all: every $X_t=(t,0,0)$ with $t>1$ gives $\beta=\omega=0$, and \eqref{eq:chart} evaluates to $0/0$. This is a restriction of the domain, not an advantage of the coordinates.
 
@@ -423,28 +424,11 @@ where $n^{\T}I_Xn$ is the physical depth information. As $\omega\to0$ we have $n
 H_{qq,\omega\omega}\sim n^{\T}I_Xn\left(\frac{d^{2}}{B}\right)^{2}=O(B^{-2}),
 \label{eq:curvature-scaling}
 \end{equation}
-which is $O(1)$ at unit baseline. The XYZ depth curvature vanishes as $\omega^{4}$, so a fixed $\lambda$ suppresses it completely, whereas the chart curvature stays $O(1)$ and the same $\lambda$ leaves the step nearly intact. Table~\ref{tab:lm-steps} quantifies this for a two-view configuration with $d/B\approx50$ and a five-percent initial depth error.
+which is $O(1)$ at unit baseline. The XYZ depth curvature vanishes as $\omega^{4}$, so a fixed $\lambda$ suppresses it completely, whereas the chart curvature stays $O(1)$ and the same $\lambda$ leaves the step nearly intact. Supplementary Table~S2 quantifies this for a two-view configuration with $d/B\approx50$ and a five-percent initial depth error.
 
-\begin{table}[t]
-\centering
-\caption{Single-point Levenberg--Marquardt steps along depth under the same $\lambda$ schedule and the same physical initial state ($d/B\approx50$, five-percent depth error). The third column maps the chart step to physical coordinates through $D_q$.}
-\label{tab:lm-steps}
-\begin{tabular}{rrrr}
-\toprule
-$\lambda$ & XYZ depth step & Parallax depth step & Relative gap \\
-\midrule
-$10^{-12}$ & $-2.62456$ & $-2.62460$ & $1.5\times10^{-5}$\\
-$10^{-10}$ & $-2.62062$ & $-2.62460$ & $1.5\times10^{-3}$\\
-$10^{-8}$  & $-2.27848$ & $-2.62460$ & $0.152$\\
-$10^{-6}$  & $-0.16231$ & $-2.62459$ & $15.0$\\
-$10^{-4}$  & $-1.94\times10^{-3}$ & $-2.62408$ & $119$\\
-$10^{-2}$  & $-3.34\times10^{-5}$ & $-2.57340$ & $1522$\\
-$1$        & $-3.45\times10^{-7}$ & $-1.05003$ & $5.8\times10^{4}$\\
-\bottomrule
-\end{tabular}
-\end{table}
+% moved to the supplementary material as Table S2
 
-The same geometry has a second face. As $\beta\to0$, $\sigma_\alpha=d\sin\beta\to0$: the trust region is crushed in the azimuthal direction and the chart itself loses rank. Parallax does not remove ill-conditioning; it relocates it from the depth direction of XYZ, where the factor is $\omega^{-2}$, to the azimuthal direction. The relocation is bounded on both sides. For any invertible $D_q$,
+The same geometry has a second face. As $\beta\to0$, $\sigma_\alpha=d\sin\beta\to0$: the trust region is crushed in the azimuthal direction and the chart itself loses rank. Parallax does not remove ill-conditioning; it relocates it from the depth direction of XYZ, where the factor is $\omega^{-2}$, to the azimuthal direction. The relocation is bounded on both sides. For any invertible $D_q$ and the spectral condition number \cite{golub2013matrix},
 \begin{equation}
 \kappa_2(H_q)\le\kappa_2(D_q)^{2}\,\kappa_2(H_x),
 \label{eq:kappa-bound}
@@ -516,28 +500,9 @@ The last two rows are the substance of what survives, and they are not small. Th
 \subsection{Numerical verification}
 \label{sec:verification}
 
-All identities in this section were checked in double precision on a five-camera, fifteen-point problem with seventy-five observations (150 residuals, 75 variables, anchors 0 and 1), whose residuals are reported in Table~\ref{tab:ba-checks}. The agreement is at the level of accumulated rounding, which is what an exact algebraic identity should produce. Ranks were computed by singular values with a relative threshold of $10^{-10}$; the inertia was computed from the symmetric eigendecomposition.
+All identities in this section were checked in double precision on a five-camera, fifteen-point problem with seventy-five observations (150 residuals, 75 variables, anchors 0 and 1), whose residuals are reported in Supplementary Table~S3. The agreement is at the level of accumulated rounding, which is what an exact algebraic identity should produce. Ranks were computed by singular values with a relative threshold of $10^{-10}$; the inertia was computed from the symmetric eigendecomposition.
 
-\begin{table}[t]
-\centering
-\caption{Residuals of the exact identities of Section~\ref{sec:ba-theorem} on a generic five-camera BA problem, except where a single-point reduction is indicated.}
-\label{tab:ba-checks}
-\small
-\begin{tabular}{lr}
-\toprule
-Check & Maximum discrepancy \\
-\midrule
-Chart reconstruction $X=\Phi_\xi(\Phi_\xi^{-1}(X))$ & $2.66\times10^{-15}$ \\
-Analytic chart Jacobian versus central differences & $1.62\times10^{-8}$ \\
-$H_q-T^{\T}H_xT$ & $1.78\times10^{-15}$ \\
-$\mathcal S_q-\mathcal S_x$ & $7.11\times10^{-15}$ (relative $5.95\times10^{-16}$) \\
-$g_q-T^{\T}g_x$ & $2.22\times10^{-16}$ \\
-Reduced gradients, both charts & $2.69\times10^{-15}$ \\
-Damping identity \eqref{eq:metric}, full BA & $1.67\times10^{-13}$ \\
-Damping identity \eqref{eq:metric}, single point & $4.42\times10^{-12}$ \\
-\bottomrule
-\end{tabular}
-\end{table}
+% moved to the supplementary material as Table S3
 
 The rank bookkeeping is equally exact: $\rank H_x=\rank H_q=68$ out of 75 variables, $\rank\mathcal S_x=\rank\mathcal S_q=23$ out of 30 pose variables, $\rank J_X=45$, and $68-45=23$ as required by \eqref{eq:rank-identity}; both inertias are $(68,0,7)$. On the same problem the two charts produce different damped steps under a common $\lambda$, with a relative difference of $0.337$, in agreement with Theorem~\ref{thm:damping}.
 
@@ -560,7 +525,7 @@ These asymptotics also locate the original argument. Its $2\times2$ matrix is th
 Before Theorem~\ref{thm:main} is applied to it, the original argument is worth stating in its own terms. It is made in a two-view bearing model, and its central computation is a $2\times2$ normal matrix that the paper shows to be positive definite. That computation is correct, and nothing below disputes it. What is at issue is what follows from it: whether it establishes that the chart avoids singularity, whether it establishes that depth remains observable where XYZ and inverse depth lose it, and whether it explains a convergence advantage. The three subsections take these in turn.
 
 \subsection{The two-dimensional matrix is positive definite}
-In the simplified two-view bearing model of Zhao et al. \cite{zhao2015parallaxba}, the point coordinates are $(\theta,\omega)$ and the predicted bearings are
+In the simplified two-view bearing model of \citet{zhao2015parallaxba}, the point coordinates are $(\theta,\omega)$ and the predicted bearings are
 \begin{equation}
   f_1(\theta,\omega)=\theta-\phi_1,\qquad
   f_2(\theta,\omega)=\theta+\omega-\phi_2.
@@ -760,7 +725,7 @@ The largest position difference between any two charts is $3.7\times10^{-14}$\,m
 
 \subsection{Conditioning is not uncertainty}
 \label{sec:sweep}
-Table~\ref{tab:sweep} sweeps the probe from $80^\circ$ down to $0.1^\circ$ of the motion axis and reports, at the true configuration, the condition number of each chart Hessian and the marginal standard deviation of the probe depth from the Cram\'er--Rao bound.
+Table~\ref{tab:sweep} sweeps the probe from $80^\circ$ down to $0.1^\circ$ of the motion axis and reports, at the true configuration, the condition number of each chart Hessian and the marginal standard deviation of the probe depth from the Cram\'er--Rao bound \cite{kay1993estimation}.
 
 \begin{table}[!tb]
 \centering
@@ -783,7 +748,7 @@ $0.1^\circ$ & $1.8\times10^{12}$ & $9.9\times10^{7}$ & $2.4\times10^{8}$ & $3.4\
 \end{tabular}
 \end{table}
 
-Three features of Table~\ref{tab:sweep} and Figure~\ref{fig:synthetic} matter. First, the condition numbers range over seven orders of magnitude, from $1.3\times10^{5}$ to $1.8\times10^{12}$, while $\sigma_d$ is a single curve: the four charts agree to a relative difference below $3\times10^{-10}$ at every angle. Conditioning measures the shape of a coordinate ellipsoid, not the information it carries. Second, the small and nearly constant $\sigma_\omega$ is compensated by $|\partial d/\partial\omega|$, which grows by the same factor of about $500$; to within the twenty percent contributed by the $\beta$ direction and its correlations, $\sigma_d=\sigma_\omega|\partial d/\partial\omega|$. This is the chain rule of Theorem~\ref{thm:gn} in probabilistic form. The parallax chart has a well-conditioned angle because it has chosen to measure a well-conditioned quantity; the ill-conditioning has moved into the map from that quantity to depth, where it is no longer visible in $\kappa(H)$.
+Three features of Table~\ref{tab:sweep} and Figure~\ref{fig:synthetic} matter. First, the condition numbers range over seven orders of magnitude, from $1.3\times10^{5}$ to $1.8\times10^{12}$, while $\sigma_d$ is a single curve: the four charts agree to a relative difference below $3\times10^{-10}$ at every angle. Conditioning measures the shape of a coordinate ellipsoid, not the information it carries. This is Hartley's normalization in another guise: rescaling the data changes the condition number a solver reports without changing the estimate it obtains \cite{hartley1997eightpoint}. Second, the small and nearly constant $\sigma_\omega$ is compensated by $|\partial d/\partial\omega|$, which grows by the same factor of about $500$; to within the twenty percent contributed by the $\beta$ direction and its correlations, $\sigma_d=\sigma_\omega|\partial d/\partial\omega|$. This is the chain rule of Theorem~\ref{thm:gn} in probabilistic form. The parallax chart has a well-conditioned angle because it has chosen to measure a well-conditioned quantity; the ill-conditioning has moved into the map from that quantity to depth, where it is no longer visible in $\kappa(H)$.
 
 Third, and contrary to the premise of the original comparison, inverse depth has the \emph{smallest} condition number of the four charts at every angle in this scene. The parallax chart is better conditioned than XYZ by one to two orders of magnitude, but it is worse conditioned than inverse depth by a factor of two to forty. Whatever a conditioning argument can support, it cannot support a general claim that parallax coordinates are better conditioned than inverse-depth coordinates.
 
@@ -1071,12 +1036,26 @@ The claims were checked where depth error is measurable rather than inferred fro
 
 \textbf{Code.} The artifact is at \url{https://github.com/Polar-vision/parallaxba-scaling}, under the MIT licence, with tag \texttt{v1.0} marking the state reported here. It carries the proof checks, the synthetic driver, the reproduction of Simulation~2, the two real-sequence tests, the scripts that draw every figure, and the six result files those scripts write.
 
+\textbf{Supplementary material.} Three tables that support the identities of Sections~\ref{sec:damping}--\ref{sec:ba-theorem} without carrying the argument are collected in the supplementary document: rank bookkeeping for the collinear configuration (Table~S1), the damped steps along depth under a shared schedule (Table~S2), and the residuals of the exact identities (Table~S3).
+
 \textbf{Data.} The synthetic problems are generated in process from the seeds fixed in the scripts, so no external corpus is read for them. The only third-party data are the TUM RGB-D sequence \texttt{fr1/xyz} \cite{sturm2012benchmark}: unpack it as \path{data/rgbd_dataset_freiburg1_xyz}, or point \texttt{--seq} in \path{real_depth_collapse.py} and the environment variable \texttt{TUM\_SEQ} in \path{real_invariance.py} somewhere else.
 
 \textbf{Environment.} Python 3.11 with NumPy 1.26, OpenCV 4.11 and Matplotlib 3.10, single-threaded and without a GPU; \path{real_depth_collapse.py} runs in about six minutes. Every random draw is seeded, so a rerun reproduces the reported digits instead of approximating them.
 
 \textbf{What writes what.} The six result files, all under \path{results/}, are \path{controlled_results.json} from the chart and continuation checks of Sections~\ref{sec:parallaxba}--\ref{sec:normalized-chart}, \path{ijrr_3d_ba_theorem.json} from the theorem checks of Section~\ref{sec:ba-theorem}, \path{synthetic_chart_experiment.json} from the synthetic study of Section~\ref{sec:synthetic}, \path{repro_sim2_ablation.json} from the reproduction of Section~\ref{sec:repro}, \path{real_invariance.json} from the invariance test of Section~\ref{sec:real}, and \path{real_depth_collapse.json} from the depth test of Section~\ref{sec:depth}. The six drivers, all under \path{code/}, pair one to one with those files: \path{verify_claims.py} for the chart and continuation checks, \path{verify_3d_ba_theorem.py} for the theorem, \path{synthetic_chart_experiment.py} for the synthetic study, \path{repro_sim2_ablation.py} for the re-run, and \path{real_invariance.py} with \path{real_depth_collapse.py} for the two real-sequence tests. The figures are drawn by \path{make_ba_theorem_figure.py}, \path{make_synthetic_figure.py} and \path{make_depth_figure.py}. \path{check_manuscript.py} reads the six result files, checks the numbers quoted above against them, and fails if one disagrees. No ground-truth accuracy, global-optimality, or controlled timing claim is inferred from data that do not measure it.
 
-\bibliographystyle{plainnat}
+\section*{Declaration of conflicting interests}
+The author(s) declared no potential conflicts of interest with respect to the research, authorship, and/or publication of this article.
+
+\section*{Funding}
+% Before submitting: if there is a funder, replace the sentence below with the grant line.
+The author(s) received no financial support for the research, authorship, and/or publication of this article.
+
+% Before submitting: add Acknowledgements and Author contributions sections if they apply.
+
+\section*{Data availability}
+The code, the six result files, and the scripts that redraw every figure are archived at \url{https://github.com/Polar-vision/parallaxba-scaling}, tagged \texttt{v1.0} under the MIT licence. The TUM RGB-D sequence \texttt{fr1/xyz} used in Sections~\ref{sec:real}--\ref{sec:depth} is publicly available \cite{sturm2012benchmark}.
+
+\bibliographystyle{apalike}
 \bibliography{references}
 \end{document}

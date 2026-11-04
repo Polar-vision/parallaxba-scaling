@@ -29,6 +29,7 @@ plt.rcParams.update({
     "axes.spines.top": False,
     "axes.spines.right": False,
     "figure.dpi": 300,
+    "savefig.dpi": 600,
     "axes.titlesize": 8.5,
     "axes.labelsize": 8.5,
     "xtick.labelsize": 7.5,

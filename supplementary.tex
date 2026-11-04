@@ -1,0 +1,93 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{booktabs,array}
+\usepackage{microtype}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\renewcommand{\thetable}{S\arabic{table}}
+\DeclareMathOperator{\rank}{rank}
+\newcommand{\T}{\mathsf{T}}
+
+\setlength{\emergencystretch}{2em}
+
+\begin{document}
+
+\noindent{\small Supplementary material for}\\[3pt]
+{\large\bfseries What ParallaxBA Actually Buys: Better Scaling, Not More Information}
+
+\medskip
+\noindent This supplement collects three tables that support identities and statements in the main text without carrying its argument. Section, equation and table numbers cited in the captions refer to the main text.
+
+\section*{S1\quad Rank bookkeeping for an exactly collinear point}
+
+The configuration of Section~4.3: four cameras at $(0,0,0)$, $(1,0,0)$, $(0,1,0)$, $(0,0,1)$, five generic points, and one point $X_5=(2,0,0)$ on the ray through the first two centres, observed only by them.
+
+\begin{table}[h]
+\centering
+\caption{Rank bookkeeping for a BA problem with and without an exactly collinear point. The extra point adds one null direction to $H$ but none to $\mathcal S$, as predicted by the rank identity of the main text.}
+\label{tab:collinear}
+\begin{tabular}{lrrc}
+\toprule
+Quantity & Base & With $X_5$ & Change \\
+\midrule
+Variables & 39 & 42 & $+3$ \\
+$\rank H$ & 32 & 34 & $+2$ \\
+$\dim\ker H$ & 7 & 8 & $+1$ \\
+$\rank J_X$ & 15 & 17 & $+2$ \\
+$\rank\mathcal S$ & 17 & 17 & $0$ \\
+$\dim\ker\mathcal S$ & 7 & 7 & $0$ \\
+$\rank H-\rank J_X$ & 17 & 17 & $0$ \\
+Rank of the $X_5$ block & --- & 2 & --- \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section*{S2\quad Damped steps along depth under a shared schedule}
+
+The two-view configuration of Section~3.4 with $d/B\approx50$ and a five-percent initial depth error. The two columns are the undamped depth steps the two charts take from the same physical state under the same damping parameter; the third column maps the chart step to physical coordinates through $D_q$.
+
+\begin{table}[h]
+\centering
+\caption{Single-point Levenberg--Marquardt steps along depth under the same $\lambda$ schedule and the same physical initial state ($d/B\approx50$, five-percent depth error). The third column maps the chart step to physical coordinates through $D_q$.}
+\label{tab:lm-steps}
+\begin{tabular}{rrrr}
+\toprule
+$\lambda$ & XYZ depth step & Parallax depth step & Relative gap \\
+\midrule
+$10^{-12}$ & $-2.62456$ & $-2.62460$ & $1.5\times10^{-5}$\\
+$10^{-10}$ & $-2.62062$ & $-2.62460$ & $1.5\times10^{-3}$\\
+$10^{-8}$  & $-2.27848$ & $-2.62460$ & $0.152$\\
+$10^{-6}$  & $-0.16231$ & $-2.62459$ & $15.0$\\
+$10^{-4}$  & $-1.94\times10^{-3}$ & $-2.62408$ & $119$\\
+$10^{-2}$  & $-3.34\times10^{-5}$ & $-2.57340$ & $1522$\\
+$1$        & $-3.45\times10^{-7}$ & $-1.05003$ & $5.8\times10^{4}$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section*{S3\quad Residuals of the exact identities}
+
+The five-camera, fifteen-point problem of Section~4.6 with seventy-five observations: 150 residuals, 75 variables, anchors 0 and 1.
+
+\begin{table}[h]
+\centering
+\caption{Residuals of the exact identities of Section~4 on a generic five-camera BA problem, except where a single-point reduction is indicated.}
+\label{tab:ba-checks}
+\begin{tabular}{lr}
+\toprule
+Check & Maximum discrepancy \\
+\midrule
+Chart reconstruction $X=\Phi_\xi(\Phi_\xi^{-1}(X))$ & $2.66\times10^{-15}$ \\
+Analytic chart Jacobian versus central differences & $1.62\times10^{-8}$ \\
+$H_q-T^{\T}H_xT$ & $1.78\times10^{-15}$ \\
+$\mathcal S_q-\mathcal S_x$ & $7.11\times10^{-15}$ (relative $5.95\times10^{-16}$) \\
+$g_q-T^{\T}g_x$ & $2.22\times10^{-16}$ \\
+Reduced gradients, both charts & $2.69\times10^{-15}$ \\
+Damping identity, full BA & $1.67\times10^{-13}$ \\
+Damping identity, single point & $4.42\times10^{-12}$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\end{document}

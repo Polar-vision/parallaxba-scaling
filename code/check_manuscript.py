@@ -13,6 +13,13 @@ with open(TEX_PATH, "r", encoding="utf-8") as f:
 with open(BIB_PATH, "r", encoding="utf-8") as f:
     bib = f.read()
 
+# Tables S1--S3 live in the supplement; the content checks below must see them.
+SUPP_PATH = os.path.join(ROOT, "supplementary.tex")
+tex_all = tex
+if os.path.exists(SUPP_PATH):
+    with open(SUPP_PATH, "r", encoding="utf-8") as f:
+        tex_all = tex + "\n" + f.read()
+
 errors = []
 
 # Check braces while ignoring escaped literal braces.
@@ -90,7 +97,7 @@ def _top_level_ampersands(line):
     return count
 
 
-for spec, body in _tabular_blocks(tex):
+for spec, body in _tabular_blocks(tex_all):
     depth, expected = 0, 0
     for ch in spec:
         if ch in "{}":
@@ -204,7 +211,7 @@ if min(r["rmse_px"] for r in five) > 0.5:
 for literal in ("$3.7\\times10^{-14}$", "$5.3\\times10^{10}$", "$4.60$",
                 "$2900$", "$4.88$", "$9.3\\times10^{-12}$",
                 "$0.84$", "$2.8\\times10^{-10}$"):
-    if literal not in tex:
+    if literal not in tex_all:
         errors.append("Synthetic-experiment value missing from manuscript: %s" % literal)
 
 with open(os.path.join(ROOT, "results", "controlled_results.json"), "r", encoding="utf-8") as f:
@@ -227,7 +234,7 @@ def _literal(x):
 for field in ("max_point_equivalence_error", "max_transition_nu_error",
               "max_raw_determinant_relative_error",
               "max_normalized_determinant_relative_error"):
-    if _literal(normalized_checks[field]) not in tex:
+    if _literal(normalized_checks[field]) not in tex_all:
         errors.append("Normalized-chart value missing from manuscript: %s"
                       % _literal(normalized_checks[field]))
 
@@ -274,12 +281,12 @@ if exp_d["metric_identity_max_error"] > 1e-10:
 for literal in ("2.66\\times10^{-15}", "1.78\\times10^{-15}", "7.11\\times10^{-15}",
                 "2.22\\times10^{-16}", "1.67\\times10^{-13}", "4.42\\times10^{-12}",
                 "68-45=23", "-1.9999", "8.0002"):
-    if literal not in tex:
+    if literal not in tex_all:
         errors.append("Theorem verification value missing from manuscript: %s" % literal)
 for row in ("$\\rank H$ & 32 & 34 & $+2$",
             "$\\rank\\mathcal S$ & 17 & 17 & $0$",
             "$\\rank J_X$ & 15 & 17 & $+2$"):
-    if row not in tex:
+    if row not in tex_all:
         errors.append("Missing or mismatched rank-bookkeeping row: %s" % row)
 
 # --------------------------------------------------------------------------
