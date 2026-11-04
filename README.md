@@ -8,11 +8,13 @@ files in `results/` are committed, so the manuscript checks run without re-runni
 ## Contents
 
 ```
-main.tex          manuscript source
-references.bib    bibliography
-code/             every script that produces a number or a figure
-results/          JSON written by the experiment scripts
-figures/          figures included by the manuscript
+main.tex              manuscript source
+supplementary.tex     Tables S1--S3, kept out of the main text
+references.bib        bibliography
+cover_letter.tex      submission letter
+code/                 every script that produces a number or a figure
+results/              JSON written by the experiment scripts
+figures/              figures included by the manuscript, drawn at 600 dpi
 ```
 
 ## Quick start
@@ -23,7 +25,7 @@ python code/check_manuscript.py       # checks the numbers quoted in the text ag
 ```
 
 `check_manuscript.py` needs no dataset: it reads the committed JSON. A non-zero exit means a
-number in `main.tex` no longer matches the result files.
+number in `main.tex` or `supplementary.tex` no longer matches the result files.
 
 ## Reproducing from scratch
 
