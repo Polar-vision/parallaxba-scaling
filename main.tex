@@ -1068,7 +1068,7 @@ The claims were checked where depth error is measurable rather than inferred fro
 \section*{Reproducibility}
 \label{sec:artifact}
 
-\textbf{Code.} The artifact is at \url{https://github.com/Polar-vision/parallaxba-scaling} and archived at \url{https://doi.org/10.5281/zenodo.NNNNNNN} (tag \texttt{v1.0}), under the MIT licence. It carries the proof checks, the synthetic driver, the reproduction of Simulation~2, the two real-sequence tests, the scripts that draw every figure, and the six result files those scripts write.
+\textbf{Code.} The artifact is at \url{https://github.com/Polar-vision/parallaxba-scaling}, under the MIT licence, with tag \texttt{v1.0} marking the state reported here. It carries the proof checks, the synthetic driver, the reproduction of Simulation~2, the two real-sequence tests, the scripts that draw every figure, and the six result files those scripts write.
 
 \textbf{Data.} The synthetic problems are generated in process from the seeds fixed in the scripts, so no external corpus is read for them. The only third-party data are the TUM RGB-D sequence \texttt{fr1/xyz} \cite{sturm2012benchmark}: unpack it as \path{data/rgbd_dataset_freiburg1_xyz}, or point \texttt{--seq} in \path{real_depth_collapse.py} and the environment variable \texttt{TUM\_SEQ} in \path{real_invariance.py} somewhere else.
 
