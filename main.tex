@@ -29,19 +29,13 @@
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\T}{\mathsf{T}}
 
-% =====================================================================
-% BEFORE UPLOADING TO SCHOLARONE
-%   1. Replace the \author block below with names, affiliations, the
-%      corresponding author's e-mail, and ORCID iDs if available.
-%   2. Check the Funding statement in the back matter.
-%   3. Complete Acknowledgements and Author contributions if applicable.
-%   4. Enter three suggested reviewers in the submission system, at least
-%      two of them drawn from this bibliography.
-% =====================================================================
 \title{What ParallaxBA Actually Buys:\\
 Better Scaling, Not More Information}
 \author{%
-  \textbf{[Author names and affiliations to be inserted before submission]}\thanks{Corresponding author: \texttt{[e-mail address]}}
+  Zhengkang Zuo\thanks{Corresponding author: \texttt{zuozhengkang@tyut.edu.cn}.
+  ORCID iD: \href{https://orcid.org/0000-0003-1255-6332}{0000-0003-1255-6332}.}\\[3pt]
+  \normalsize Polar-vision Laboratory, College of Geoscience and Surveying Engineering,\\
+  \normalsize Taiyuan University of Technology, Taiyuan 030024, Shanxi, China
 }
 \date{\today}
 
@@ -87,7 +81,7 @@ This paper offers a mathematical and empirical reconciliation. The mathematics h
 \section{Related Work}
 Inverse-depth parametrization was developed for undelayed monocular EKF initialization and for representing large depth uncertainty, including points at infinity \cite{civera2008inverse}. It remains the standard choice wherever that uncertainty is the organizing problem, from filter-based monocular SLAM \cite{strasdat2010scaledrift,murartal2015orbslam} to sparse direct formulations \cite{engel2018dso}. Optical-axis inverse depth $1/z$ and inverse Euclidean range $1/\|x\|$ are distinct coordinates, and the four charts compared below include both, so the ambiguity between them can be kept out of the experiments.
 
-ParallaxBA instead uses two anchor cameras and a parallax angle \cite{zhao2015parallaxba}, a representation its authors reached from a linear formulation of the same estimation problem \cite{zhao2014linear}. \citet{zuo2023applicability} extended parts of the sensitivity discussion to three dimensions and reported unfavorable short-baseline simulations and two small real SfM experiments. Their work is an important precursor: we do not claim to be the first to question a two-dimensional-to-three-dimensional extrapolation. Our distinct focus is the exact scaled-ray domain, chart regularity, matched initial physical states, and a much larger controlled BA comparison.
+ParallaxBA instead uses two anchor cameras and a parallax angle \cite{zhao2015parallaxba}, a representation its authors reached from a linear formulation of the same estimation problem \cite{zhao2014linear}. An earlier study led by the present author \cite{zuo2023applicability} extended parts of the sensitivity discussion to three dimensions and reported unfavorable short-baseline simulations and two small real SfM experiments. That study is the immediate precursor of this paper, and what follows revises part of its reasoning rather than its measurements; we therefore make no claim to be the first to question a two-dimensional-to-three-dimensional extrapolation. Our distinct focus is the exact scaled-ray domain, chart regularity, matched initial physical states, and a much larger controlled BA comparison.
 
 PMBA uses manifold ray coordinates and a modified observation-ray objective \cite{liu2018pmba}. Those changes can alter the relevant singular sets. The counterexample in Section~\ref{sec:zero-ray} is therefore specific to the original ParallaxBA scaled-ray equation and implementations that reproduce it.
 
@@ -1045,16 +1039,16 @@ The claims were checked where depth error is measurable rather than inferred fro
 \textbf{What writes what.} The six result files, all under \path{results/}, are \path{controlled_results.json} from the chart and continuation checks of Sections~\ref{sec:parallaxba}--\ref{sec:normalized-chart}, \path{ijrr_3d_ba_theorem.json} from the theorem checks of Section~\ref{sec:ba-theorem}, \path{synthetic_chart_experiment.json} from the synthetic study of Section~\ref{sec:synthetic}, \path{repro_sim2_ablation.json} from the reproduction of Section~\ref{sec:repro}, \path{real_invariance.json} from the invariance test of Section~\ref{sec:real}, and \path{real_depth_collapse.json} from the depth test of Section~\ref{sec:depth}. The six drivers, all under \path{code/}, pair one to one with those files: \path{verify_claims.py} for the chart and continuation checks, \path{verify_3d_ba_theorem.py} for the theorem, \path{synthetic_chart_experiment.py} for the synthetic study, \path{repro_sim2_ablation.py} for the re-run, and \path{real_invariance.py} with \path{real_depth_collapse.py} for the two real-sequence tests. The figures are drawn by \path{make_ba_theorem_figure.py}, \path{make_synthetic_figure.py} and \path{make_depth_figure.py}. \path{check_manuscript.py} reads the six result files, checks the numbers quoted above against them, and fails if one disagrees. No ground-truth accuracy, global-optimality, or controlled timing claim is inferred from data that do not measure it.
 
 \section*{Declaration of conflicting interests}
-The author(s) declared no potential conflicts of interest with respect to the research, authorship, and/or publication of this article.
+The author declared no potential conflicts of interest with respect to the research, authorship, and/or publication of this article.
 
 \section*{Funding}
-% Before submitting: if there is a funder, replace the sentence below with the grant line.
-The author(s) received no financial support for the research, authorship, and/or publication of this article.
+This work was supported by the National Natural Science Foundation of China (grant no. T2600787) and the Natural Science Foundation of Shanxi Province (grant no. 202403021212106).
 
-% Before submitting: add Acknowledgements and Author contributions sections if they apply.
+\section*{Author contributions}
+ZZ conceived the study, developed the theory, implemented the code and the experiments, analysed the results, and wrote the manuscript. The author confirms sole responsibility for the content of this article.
 
 \section*{Data availability}
-The code, the six result files, and the scripts that redraw every figure are archived at \url{https://github.com/Polar-vision/parallaxba-scaling}, tagged \texttt{v1.0} under the MIT licence. The TUM RGB-D sequence \texttt{fr1/xyz} used in Sections~\ref{sec:real}--\ref{sec:depth} is publicly available \cite{sturm2012benchmark}.
+The code, the six result files, and the scripts that redraw every figure are available at \url{https://github.com/Polar-vision/parallaxba-scaling}, tagged \texttt{v1.0} under the MIT licence. The TUM RGB-D sequence \texttt{fr1/xyz} used in Sections~\ref{sec:real}--\ref{sec:depth} is publicly available \cite{sturm2012benchmark}.
 
 \bibliographystyle{apalike}
 \bibliography{references}

@@ -1,5 +1,5 @@
 \documentclass[10pt,a4paper]{article}
-\usepackage[margin=0.9in]{geometry}
+\usepackage[margin=0.85in]{geometry}
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}
 \usepackage{parskip}
@@ -12,13 +12,14 @@
 \begin{document}
 
 \noindent
-[Author name]\newline
-[Affiliation]\newline
-[E-mail]
+Zhengkang Zuo\newline
+Polar-vision Laboratory, College of Geoscience and Surveying Engineering\newline
+Taiyuan University of Technology, Taiyuan 030024, Shanxi, China\newline
+\texttt{zuozhengkang@tyut.edu.cn}
 
 \bigskip
 \noindent
-\today
+4 November 2026
 
 \bigskip
 \noindent
@@ -28,17 +29,17 @@ The Editors\\
 \bigskip
 \noindent Dear Editors,
 
-We submit ``What ParallaxBA Actually Buys: Better Scaling, Not More Information'' for consideration as a research article in \textit{The International Journal of Robotics Research}.
+I submit ``What ParallaxBA Actually Buys: Better Scaling, Not More Information'' for consideration as a research article in \textit{The International Journal of Robotics Research}.
 
-The paper settles, analytically, a question that has so far been argued empirically: what does the choice of point coordinates actually buy in bundle adjustment? We show that for any chart that smoothly reparameterizes the point coordinates---including charts that depend on the optimized anchor poses, which is the case for ParallaxBA and which the classical fixed-reparameterization argument does not cover---the reduced camera matrix that a Schur-based solver factorizes is identical elementwise. The chart can change the damping metric and the domain; it cannot change the system being solved. The proof is four lines of algebra once the object is named, but naming it requires separating the camera block, which does change, from the Schur complement, which does not, and that separation is what the existing literature has been missing.
+The paper settles, analytically, a question that has so far been argued empirically: what does the choice of point coordinates actually buy in bundle adjustment? I show that for any chart that smoothly reparameterizes the point coordinates---including charts that depend on the optimized anchor poses, which is the case for ParallaxBA and which the classical fixed-reparameterization argument does not cover---the reduced camera matrix that a Schur-based solver factorizes is identical elementwise. The chart can change the damping metric and the domain; it cannot change the system being solved. The proof is four lines of algebra once the object is named, but naming it requires separating the camera block, which does change, from the Schur complement, which does not, and that separation is what the existing literature has been missing.
 
-Two consequences follow, and the paper states both. First, a positive-definite point-block information matrix cannot certify depth identifiability or BA non-singularity, in either direction; we give the rank bookkeeping $\rank\mathcal S=\rank H-\rank J_X$ that makes the failure explicit. Second, what Parallax coordinates do provide is real and worth having---a bounded chart Hessian where XYZ grows as $\omega^{-2}$, and a trust region stretched along depth by $d/B$---and we say precisely what these are: a preconditioning of the depth direction and a geometry of damping, neither of which adds an observation.
+Two consequences follow, and the paper states both. First, a positive-definite point-block information matrix cannot certify depth identifiability or BA non-singularity, in either direction; the rank bookkeeping $\rank\mathcal S=\rank H-\rank J_X$ makes the failure explicit. Second, what Parallax coordinates do provide is real and worth having---a bounded chart Hessian where XYZ grows as $\omega^{-2}$, and a trust region stretched along depth by $d/B$---and the paper says precisely what these are: a preconditioning of the depth direction and a geometry of damping, neither of which adds an observation.
 
-The empirical part checks the claim where depth error is measurable rather than inferred from a residual. Four charts spanning seven orders of magnitude in condition number return the same physical Gauss--Newton iterates to $4\times10^{-14}$ and the same depth Cram\'er--Rao bound to $3\times10^{-10}$; on a real handheld sequence the reduced system agrees to $9\times10^{-14}$. We also re-run the experiment that is cited against inverse depth, supplying the Euclidean control it omits, and report that all three depth-coordinate charts fail at the same threshold.
+The empirical part checks the claim where depth error is measurable rather than inferred from a residual. Four charts spanning seven orders of magnitude in condition number return the same physical Gauss--Newton iterates to $4\times10^{-14}$ and the same depth Cram\'er--Rao bound to $3\times10^{-10}$; on a real handheld sequence the reduced system agrees to $9\times10^{-14}$. I also re-run the experiment that is cited against inverse depth, supplying the Euclidean control it omits, and report that all three depth-coordinate charts fail at the same threshold.
 
-The paper engages directly with Zuo et al. (2023), which extended parts of the original sensitivity analysis to three dimensions. We would like to be explicit that the disagreement is with one inference in that work and not with its authors. We are aware that its authors may be invited to review; we would simply ask that, should that happen, a third assessment be sought alongside it.
+I should be explicit about the relation to Zuo et al. (2023), which extended parts of the original sensitivity analysis to three dimensions: I was the lead author of that study. This paper revises part of its reasoning---the step from a positive-definite three-dimensional point block to depth identifiability---while leaving its measurements intact, and it also qualifies the negative reading of the chart that the earlier study supported. The review process needs no shielding from that, and I state it here so that the relation between the two papers is unambiguous from the outset.
 
-The manuscript is original, is not under consideration elsewhere, and has not been published. [Preprint statement: either state that no version has been posted, or give the arXiv identifier.] The code and the six result files are available at \url{https://github.com/Polar-vision/parallaxba-scaling} under the MIT licence, and a script in that repository re-reads them and fails if any number quoted in the text disagrees.
+The manuscript is original, is not under consideration elsewhere, and has not been published. [Preprint statement: state that no version has been posted, or give the arXiv identifier.] The code and the six result files are available at \url{https://github.com/Polar-vision/parallaxba-scaling} under the MIT licence, and a script in that repository re-reads them and fails if any number quoted in the text disagrees. Suggested reviewers, with affiliations and addresses, are entered in the submission system.
 
 \bigskip
 \noindent Thank you for your consideration.
@@ -46,7 +47,7 @@ The manuscript is original, is not under consideration elsewhere, and has not be
 \bigskip
 \noindent Sincerely,
 
-\vspace{18pt}
-\noindent [Author name]
+\vspace{16pt}
+\noindent Zhengkang Zuo
 
 \end{document}

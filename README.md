@@ -12,6 +12,7 @@ main.tex              manuscript source
 supplementary.tex     Tables S1--S3, kept out of the main text
 references.bib        bibliography
 cover_letter.tex      submission letter
+suggested_reviewers.md  reviewer suggestions and the conflicts behind them
 code/                 every script that produces a number or a figure
 results/              JSON written by the experiment scripts
 figures/              figures included by the manuscript, drawn at 600 dpi
