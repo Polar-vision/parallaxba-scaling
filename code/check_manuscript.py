@@ -1,6 +1,13 @@
-"""Static consistency checks for the LaTeX manuscript and generated evidence."""
+"""Consistency checks for the generated evidence and, where present, the LaTeX manuscript.
+
+The repository carries the code and the result files.  The manuscript source (main.tex,
+supplementary.tex, references.bib) is not part of it; when those files sit next to code/,
+the numbers quoted in the text are checked against the result files as well.  Without
+them only the result files are checked.
+"""
 
 import json
+import math
 import os
 import re
 
@@ -8,17 +15,28 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TEX_PATH = os.path.join(ROOT, "main.tex")
 BIB_PATH = os.path.join(ROOT, "references.bib")
 
-with open(TEX_PATH, "r", encoding="utf-8") as f:
-    tex = f.read()
-with open(BIB_PATH, "r", encoding="utf-8") as f:
-    bib = f.read()
+HAVE_TEXT = os.path.exists(TEX_PATH)
+tex = bib = ""
+if HAVE_TEXT:
+    with open(TEX_PATH, "r", encoding="utf-8") as f:
+        tex = f.read()
+    with open(BIB_PATH, "r", encoding="utf-8") as f:
+        bib = f.read()
 
-# Tables S1--S3 live in the supplement; the content checks below must see them.
+# Tables S1--S4 live in the supplement; the content checks below must see them.
 SUPP_PATH = os.path.join(ROOT, "supplementary.tex")
 tex_all = tex
-if os.path.exists(SUPP_PATH):
+if HAVE_TEXT and os.path.exists(SUPP_PATH):
     with open(SUPP_PATH, "r", encoding="utf-8") as f:
         tex_all = tex + "\n" + f.read()
+
+
+def quoted(literal, text=None):
+    """Whether a number or a table row is quoted in the manuscript.
+
+    Always true when the manuscript source is not present, so that only the
+    result files are checked."""
+    return (not HAVE_TEXT) or literal in (tex_all if text is None else text)
 
 errors = []
 
@@ -49,7 +67,7 @@ if env_stack:
 # Check citations and references against the local BibTeX database.
 bib_keys = set(re.findall(r"@\w+\s*\{\s*([^,\s]+)\s*,", bib))
 cite_keys = set()
-for group in re.findall(r"\\cite\{([^}]+)\}", tex):
+for group in re.findall(r"\\cite[a-z]*\*?(?:\[[^\]]*\])*\{([^}]+)\}", tex):
     cite_keys.update(k.strip() for k in group.split(","))
 missing = sorted(cite_keys - bib_keys)
 if missing:
@@ -211,7 +229,7 @@ if min(r["rmse_px"] for r in five) > 0.5:
 for literal in ("$3.7\\times10^{-14}$", "$5.3\\times10^{10}$", "$4.60$",
                 "$2900$", "$4.88$", "$9.3\\times10^{-12}$",
                 "$0.84$", "$2.8\\times10^{-10}$"):
-    if literal not in tex_all:
+    if not quoted(literal):
         errors.append("Synthetic-experiment value missing from manuscript: %s" % literal)
 
 with open(os.path.join(ROOT, "results", "controlled_results.json"), "r", encoding="utf-8") as f:
@@ -234,7 +252,7 @@ def _literal(x):
 for field in ("max_point_equivalence_error", "max_transition_nu_error",
               "max_raw_determinant_relative_error",
               "max_normalized_determinant_relative_error"):
-    if _literal(normalized_checks[field]) not in tex_all:
+    if not quoted(_literal(normalized_checks[field])):
         errors.append("Normalized-chart value missing from manuscript: %s"
                       % _literal(normalized_checks[field]))
 
@@ -281,12 +299,12 @@ if exp_d["metric_identity_max_error"] > 1e-10:
 for literal in ("2.66\\times10^{-15}", "1.78\\times10^{-15}", "7.11\\times10^{-15}",
                 "2.22\\times10^{-16}", "1.67\\times10^{-13}", "4.42\\times10^{-12}",
                 "68-45=23", "-1.9999", "8.0002"):
-    if literal not in tex_all:
+    if not quoted(literal):
         errors.append("Theorem verification value missing from manuscript: %s" % literal)
 for row in ("$\\rank H$ & 32 & 34 & $+2$",
             "$\\rank\\mathcal S$ & 17 & 17 & $0$",
             "$\\rank J_X$ & 15 & 17 & $+2$"):
-    if row not in tex_all:
+    if not quoted(row):
         errors.append("Missing or mismatched rank-bookkeeping row: %s" % row)
 
 # --------------------------------------------------------------------------
@@ -422,20 +440,197 @@ else:
     depth_summary = "skipped (results/real_depth_collapse.json absent)"
 
 
+# --------------------------------------------------------------------------
+# The linearized step versus the update, and the parallax chart in the
+# original coordinates (results/original_chart_experiment.json)
+# --------------------------------------------------------------------------
+oce_path = os.path.join(ROOT, "results", "original_chart_experiment.json")
+if os.path.exists(oce_path):
+    with open(oce_path, "r", encoding="utf-8") as fh:
+        oce = json.load(fh)
+    c5 = ("xyz", "id", "ir", "pa", "po")
+    upper, lower = oce["O1_regular_rig"], oce["O1b_regular_rig_cameras_perturbed"]
+    for tag, blk in (("cameras at the truth", upper), ("cameras perturbed", lower)):
+        for c in c5:
+            if blk[c]["status"] != "converged":
+                errors.append("Undamped GN did not converge for %s (%s)" % (c, tag))
+            if blk[c]["first_step_physical_rel_diff"] > 1e-9:
+                errors.append("Linearized step is not chart invariant for %s (%s): %g"
+                              % (c, tag, blk[c]["first_step_physical_rel_diff"]))
+        for c in ("id", "ir", "pa", "po"):
+            if blk[c]["second_order_mismatch"] < 1e-2:
+                errors.append("Update mismatch of %s is %.1e (%s): the second-order "
+                              "statement of the text would be vacuous"
+                              % (c, blk[c]["second_order_mismatch"], tag))
+    if [upper[c]["iter"] for c in c5] != [4, 1, 4, 4, 4]:
+        errors.append("Iteration counts of the regular rig changed: %r"
+                      % [upper[c]["iter"] for c in c5])
+    if {lower[c]["iter"] for c in c5} != {4}:
+        errors.append("Iteration counts with perturbed cameras changed: %r"
+                      % [lower[c]["iter"] for c in c5])
+    if lower["xyz"]["first_step_camera_norm"] < 1e-2:
+        errors.append("Perturbed-camera problem has a vanishing camera step")
+    for c in ("xyz", "id", "ir", "pa"):
+        if s1["charts"][c]["iter"] != upper[c]["iter"]:
+            errors.append("Table 3 problem differs from the O1 problem for %s" % c)
+
+    sw = oce["O2_angle_sweep"]
+    sig_spread = max((max(r[c]["sigma_depth_m"] for c in c5) - min(r[c]["sigma_depth_m"] for c in c5))
+                     / (sum(r[c]["sigma_depth_m"] for c in c5) / 5.0) for r in sw)
+    if sig_spread > 5e-10:
+        errors.append("Depth CRB is not invariant across five charts: %g" % sig_spread)
+    for key, val in oce["consistency_with_shipped"].items():
+        if isinstance(val, float) and val > 1e-9:
+            errors.append("Original-chart script no longer reproduces the shipped results (%s=%g)"
+                          % (key, val))
+    flat = [r["po"]["kappa_H"] for r in sw if r["beta_deg"] <= 20.0]
+    if max(flat) / min(flat) > 1.1:
+        errors.append("kappa(H) of the original coordinates is not flat below 20 degrees")
+    for r in sw:
+        if r["beta_deg"] <= 3.0 and r["po"]["kappa_H"] > min(r[c]["kappa_H"] for c in c5):
+            errors.append("Original coordinates are not the best conditioned chart at %s degrees"
+                          % r["beta_deg"])
+    last = sw[-1]
+    span = math.log10(max(last[c]["kappa_H"] for c in c5) / min(last[c]["kappa_H"] for c in c5))
+    if not 6.9 < span < 7.1:
+        errors.append("Five charts do not span seven orders of magnitude at 0.1 degrees: %.2f" % span)
+    span4 = max(math.log10(max(r[c]["kappa_H"] for c in c5[:4]) / min(r[c]["kappa_H"] for c in c5[:4]))
+                for r in sw)
+    if not 4.2 < span4 < 4.3:
+        errors.append("Four charts span %.2f orders at one angle, not 4.2-4.3" % span4)
+    pa_id = [r["pa"]["kappa_H"] / r["id"]["kappa_H"] for r in sw]
+    xyz_pa = [r["xyz"]["kappa_H"] / r["pa"]["kappa_H"] for r in sw]
+    if not (4.8 < min(pa_id) < 5.0 and 33.0 < max(pa_id) < 34.5):
+        errors.append("PA/ID range changed: %.2f .. %.2f" % (min(pa_id), max(pa_id)))
+    if not (230 < min(xyz_pa) < 240 and 520 < max(xyz_pa) < 535):
+        errors.append("XYZ/PA range changed: %.0f .. %.0f" % (min(xyz_pa), max(xyz_pa)))
+
+    for r in oce["O5_aligned_jacobian"]:
+        if r["po"]["jacobian_variation_over_azimuth"] < 0.3:
+            errors.append("Original-chart Jacobian has a limit at the baseline (phi=%s)" % r["phi_deg"])
+    pav = [r["pa"]["jacobian_variation_over_azimuth"] for r in oce["O5_aligned_jacobian"]]
+    if not all(b < a for a, b in zip(pav, pav[1:])):
+        errors.append("Baseline-adapted Jacobian variation does not shrink towards the baseline")
+
+    sim = oce["O4_sim2"]
+    ks = [sim["R1_conditioning"][c]["cond_S"] for c in c5]
+    if (max(ks) - min(ks)) / min(ks) > 1e-8:
+        errors.append("Reduced camera system differs across five charts on the Simulation 2 geometry")
+    if {sim["R1_conditioning"][c]["rank_S"] for c in c5} != {117}:
+        errors.append("Simulation 2 reduced camera system is not rank 117 in every chart")
+    if sim["R3_tolerance"]["po"]["5"]["status"] != "converged" or sim["R4_lateral"]["po"]["5"]["status"] != "converged":
+        errors.append("Original coordinates do not survive a factor of five in Simulation 2")
+    ratio_id_pa = sim["R1_conditioning"]["id"]["cond_H"] / sim["R1_conditioning"]["pa"]["cond_H"]
+    ratio_id_po = sim["R1_conditioning"]["id"]["cond_H"] / sim["R1_conditioning"]["po"]["cond_H"]
+    ratio_all = (max(sim["R1_conditioning"][c]["cond_H"] for c in c5[:4])
+                 / min(sim["R1_conditioning"][c]["cond_H"] for c in c5[:4]))
+    if (round(ratio_id_pa), round(ratio_id_po), round(ratio_all)) != (365, 347, 376):
+        errors.append("Simulation 2 conditioning ratios changed: %.1f %.1f %.1f"
+                      % (ratio_id_pa, ratio_id_po, ratio_all))
+
+    one = [r for r in oce["O2b_small_angle_lm"] if abs(r["beta_deg"] - 1.0) < 1e-9][0]
+    po_iso = one["isotropic"]["po"]
+    if not (po_iso["status"] == "converged" and po_iso["rmse_px"] > 10.0
+            and (po_iso["exit_gradient_max"] or 0.0) > 0.1 and po_iso["exit_lambda"] > 1e6):
+        errors.append("Original coordinates no longer show a false convergence at 1 degree: %r" % po_iso)
+
+    # the damping experiment, repeated for the original coordinates
+    o6 = oce["O6_damping_metric"]
+    if max(r["pullback_metric"]["po"] for r in o6) > 1e-10:
+        errors.append("Pullback damping identity fails for the original coordinates")
+    if [r for r in o6 if r["lambda"] == 1.0][0]["same_lambda_everywhere"]["po"] < 1.0:
+        errors.append("The same lambda does not separate the original coordinates from XYZ")
+
+    # numbers quoted in the new tables and text must be the ones in the result file
+    # (two significant digits, as the tables print them)
+    def _lit2(x):
+        m, e = ("%.1e" % x).split("e")
+        return "%s\\times10^{%d}" % (m, int(e))
+
+    for value in (upper["po"]["first_step_physical_rel_diff"], upper["po"]["position_difference_vs_xyz_m"],
+                  lower["po"]["second_order_mismatch"], po_iso["exit_gradient_max"],
+                  sw[0]["po"]["kappa_H"], oce["O5_aligned_jacobian"][-1]["po"]["cond_D_a0"],
+                  oce["O5_aligned_jacobian"][-1]["pa"]["jacobian_variation_over_azimuth"],
+                  max(r["pullback_metric"]["po"] for r in o6)):
+        if not quoted(_lit2(value), tex):
+            errors.append("Original-chart value missing from manuscript: %s" % _lit2(value))
+    # every generated table row must appear verbatim: re-derive each row from the JSON
+    def _d(x, n=2):
+        m, e = ("%.*e" % (n - 1, x)).split("e")
+        return "$%s\\times10^{%d}$" % (m, int(e))
+
+    chart_rows = (("xyz", "XYZ", "$(X,Y,Z)$"), ("id", "Inverse depth", "$(u,v,\\rho)$"),
+                  ("ir", "Inverse range", "$(\\theta,\\phi,\\rho)$"),
+                  ("pa", "Parallax (PA)", "$(\\alpha,\\beta,\\omega)$"),
+                  ("po", "Parallax (PO)", "$(\\psi,\\theta,\\omega)$"))
+    for blk in (upper, lower):
+        for key, label, params in chart_rows:
+            r = blk[key]
+            ref = key == "xyz"
+            row = " & ".join([label, params, str(r["iter"]), _d(r["max_depth_rel_error"]),
+                              "---" if ref else _d(r["position_difference_vs_xyz_m"]) + "\\,m",
+                              "---" if ref else _d(r["first_step_physical_rel_diff"]),
+                              "---" if ref else _d(r["second_order_mismatch"])]) + "\\\\"
+            if not quoted(row, tex):
+                errors.append("Table 3 row does not match the result file: %s" % row[:100])
+    for r in sw:
+        cells = _d(r["pa"]["kappa_H"]) + " & " + _d(r["po"]["kappa_H"]) + " & "
+        if not quoted(cells, tex):
+            errors.append("Table 4 PA/PO cells do not match the result file at %s deg" % r["beta_deg"])
+    for r in oce["O5_aligned_jacobian"]:
+        row = " & ".join(["$%g$" % r["phi_deg"], _d(r["pa"]["cond_D_a0"]), _d(r["po"]["cond_D_a0"]),
+                          _d(r["pa"]["jacobian_variation_over_azimuth"]),
+                          _d(r["po"]["jacobian_variation_over_azimuth"])]) + "\\\\"
+        if not quoted(row, tex):
+            errors.append("Table 5 row does not match the result file: %s" % row)
+    pcond = sim["R1_conditioning"]["po"]
+    row = ("Parallax (PO) & " + _d(pcond["cond_H"], 3) + " & " + _d(pcond["cond_point_block"], 3)
+           + " & $1.628\\,171\\times10^{8}$ & $117$\\\\")
+    if not quoted(row, tex):
+        errors.append("Simulation 2 conditioning row of the original coordinates does not match: %s" % row)
+
+    def _lm_cell(x):
+        err = x["depth_rel_error"]
+        e = ("$%.2g$" % err) if err < 100 else _d(err)
+        return "%.3f; %s; %s" % (x["rmse_px"], e, x["status"][0])
+
+    for r in oce["O2b_small_angle_lm"]:
+        if r["beta_deg"] < 0.05 or r["beta_deg"] > 3.5:
+            continue
+        row = " & ".join(["$%g^{\\circ}$" % r["beta_deg"], _lm_cell(r["isotropic"]["pa"]), _lm_cell(r["isotropic"]["po"]),
+                          _lm_cell(r["depth_only"]["pa"]), _lm_cell(r["depth_only"]["po"])]) + "\\\\"
+        if not quoted(row):
+            errors.append("Supplementary Table S4 row does not match the result file: %s" % row[:100])
+    po_lam = _d(po_iso["exit_lambda"], 1)[1:-1]
+    if not quoted(po_lam, tex):
+        errors.append("Exit damping of the original coordinates missing from the manuscript: %s" % po_lam)
+
+    oce_summary = ("linearized step %.1e, update mismatch %.1f-%.1f%%, kappa span %.1f orders at 0.1 deg"
+                   % (max(blk[c]["first_step_physical_rel_diff"] for blk in (upper, lower) for c in c5),
+                      100 * min(blk[c]["second_order_mismatch"] for blk in (upper, lower) for c in c5[1:]),
+                      100 * max(blk[c]["second_order_mismatch"] for blk in (upper, lower) for c in c5[1:]), span))
+else:
+    oce_summary = "skipped (results/original_chart_experiment.json absent)"
+
 if errors:
     print("MANUSCRIPT CHECK FAILED")
     for error in errors:
         print("-", error)
     raise SystemExit(1)
 
-print("Manuscript static checks passed")
-print("Citations:", len(cite_keys), "BibTeX entries:", len(bib_keys))
-print("Labels:", len(labels), "references:", len(refs))
+if HAVE_TEXT:
+    print("Manuscript static checks passed")
+    print("Citations:", len(cite_keys), "BibTeX entries:", len(bib_keys))
+    print("Labels:", len(labels), "references:", len(refs))
+else:
+    print("Result-file checks passed (main.tex is not in this checkout, "
+          "so the numbers quoted in the text were not compared)")
 print("Synthetic GN invariance: %.1e m" % s1["max_abs_position_difference_m"])
 print("Depth CRB chart spread: %.1e over %d angles" % (worst_spread, len(sweep)))
 print("Condition-number span: %.1e" % (kappa_max / kappa_min))
 print("Pullback damping identity: %.1e" % max(max(r["pullback_metric"].values()) for r in damp))
 print("Normalized-chart algebraic checks: within tolerance")
 print("BA-theorem identities: within tolerance; rank bookkeeping traced")
+print("Original coordinates:", oce_summary)
 print("Real-sequence invariance:", real_summary)
 print("Real-sequence depth:", depth_summary)
