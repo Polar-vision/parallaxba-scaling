@@ -152,12 +152,13 @@ def parallax_deg(X, ca, cb):
 def depth_crb(X, cams, Rs, sigma_px, anchor=0):
     """Relative standard deviation of the depth of one point, from its own rays.
 
-    The Fisher information of the eight bearing measurements, restricted to the
-    depth direction.  Rotation contributes: a camera that turns between frames
-    changes where a fixed point appears even when it does not translate, and
-    that constrains depth as surely as parallax does.  On this sequence it
-    dominates at the smallest baselines, which is why the parallax angle alone
-    does not predict the error (Figure~\ref{fig:real-depth}).
+    The Fisher information of the bearing measurements of every camera that
+    observes the point, with the poses held fixed, restricted to the depth
+    direction.  The depth information comes from the spread of the camera
+    centres.  A rotation about a centre moves the pixel at which the point
+    appears but not its ray, so it enters only through the pixel-to-angle
+    scale at that image position and carries no depth information of its own.
+    No chart appears in the bound.
     """
     F = np.zeros((3, 3))
     for i in range(len(cams)):
@@ -540,9 +541,8 @@ def summarize(records, strict=True):
         if strict and not all("rel_err" in rec["charts"].get(c, {}) for c in CHARTS):
             continue
         kept += 1
-        # first-order propagation of the tracking noise through the triangle,
-        # from the Fisher information of this point's own eight rays.  No chart
-        # appears in it; rotation enters as well as translation.
+        # first-order propagation of the tracking noise through this point's
+        # own rays, with the poses fixed (depth_crb).  No chart appears in it.
         pred = np.asarray(rec.get("crb"), float)
         ref = rec["charts"].get("xyz", {})
         for c in CHARTS:

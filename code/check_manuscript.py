@@ -138,6 +138,16 @@ for spec, body in _tabular_blocks(tex_all):
 if re.search(r"\b(?:TODO|TBD|PLACEHOLDER)\b", tex, re.I):
     errors.append("Unresolved TODO/TBD/PLACEHOLDER token")
 
+# Sage limits the abstract to 250 words; count every token of a formula as a word,
+# which is the larger of the two usual counts.
+if HAVE_TEXT and "\\begin{abstract}" in tex:
+    _abs = tex[tex.find("\\begin{abstract}") + len("\\begin{abstract}"):tex.find("\\end{abstract}")]
+    _abs = _abs.replace("\\'e", "e").replace("--", "-").replace("\\,", " ")
+    _abs = re.sub(r"\$([^$]*)\$",
+                  lambda m: " ".join(re.findall(r"[A-Za-z]+|\d+", m.group(1))) or "M", _abs)
+    if len(_abs.split()) > 250:
+        errors.append("Abstract has %d words; the limit is 250" % len(_abs.split()))
+
 # Trace the synthetic-experiment tables back to the generated JSON.
 with open(os.path.join(ROOT, "results", "synthetic_chart_experiment.json"),
           "r", encoding="utf-8") as f:
@@ -581,8 +591,8 @@ if os.path.exists(oce_path):
         row = " & ".join(["$%g$" % r["phi_deg"], _d(r["pa"]["cond_D_a0"]), _d(r["po"]["cond_D_a0"]),
                           _d(r["pa"]["jacobian_variation_over_azimuth"]),
                           _d(r["po"]["jacobian_variation_over_azimuth"])]) + "\\\\"
-        if not quoted(row, tex):
-            errors.append("Table 5 row does not match the result file: %s" % row)
+        if not quoted(row):
+            errors.append("Supplementary Table S5 row does not match the result file: %s" % row)
     pcond = sim["R1_conditioning"]["po"]
     row = ("Parallax (PO) & " + _d(pcond["cond_H"], 3) + " & " + _d(pcond["cond_point_block"], 3)
            + " & $1.628\\,171\\times10^{8}$ & $117$\\\\")
@@ -604,6 +614,44 @@ if os.path.exists(oce_path):
     po_lam = _d(po_iso["exit_lambda"], 1)[1:-1]
     if not quoted(po_lam, tex):
         errors.append("Exit damping of the original coordinates missing from the manuscript: %s" % po_lam)
+
+    # Sentences of the text, not only table cells: each phrase below is rebuilt from
+    # the result file, so a number edited in the prose alone fails here.
+    def _sig1(x):
+        m, e = ("%.0e" % x).split("e")
+        return "%s\\times10^{%d}" % (m, int(e))
+
+    pos_up = max(upper[c]["position_difference_vs_xyz_m"] for c in c5[1:])
+    pos_lo = max(lower[c]["position_difference_vs_xyz_m"] for c in c5[1:])
+    depth_worst = max(blk[c]["max_depth_rel_error"] for blk in (upper, lower) for c in c5)
+    first_step = max(blk[c]["first_step_physical_rel_diff"] for blk in (upper, lower) for c in c5)
+    mism = [blk[c]["second_order_mismatch"] for blk in (upper, lower) for c in c5[1:]]
+    lam_lo = [r for r in o6 if r["lambda"] == 1e-8][0]
+    lam_hi = [r for r in o6 if r["lambda"] == 1.0][0]
+    others = {round(v, 4) for c, v in lam_lo["step_norm"].items() if c != "xyz"}
+    at3 = [r for r in sw if abs(r["beta_deg"] - 3.0) < 1e-9][0]
+    phrases = [
+        "the largest position difference from XYZ is $%s$\\,m with the cameras at their true values "
+        "and $%s$\\,m with them perturbed" % (_lit2(pos_up), _lit2(pos_lo)),
+        "agrees across charts to $%s$ or better" % _lit2(first_step),
+        "differs from XYZ's by $%.1f$ to $%.1f$ percent of the step" % (100 * min(mism), 100 * max(mism)),
+        "$%.4f$ for XYZ and $%.4f$ for the other four charts"
+        % (lam_lo["step_norm"]["xyz"], others.pop() if len(others) == 1 else -1.0),
+        "by a relative $%s$ at $\\lambda=10^{-8}$ and by $%.1f$ at $\\lambda=1$, where it is $%.1f$ times longer"
+        % (_lit2(lam_lo["same_lambda_everywhere"]["po"]), lam_hi["same_lambda_everywhere"]["po"],
+           lam_hi["step_norm"]["po"] / lam_hi["step_norm"]["xyz"]),
+        "level with inverse depth at $3^{\\circ}$ ($%.2f$ against $%.2f\\times10^{5}$)"
+        % (at3["po"]["kappa_H"] / 1e5, at3["id"]["kappa_H"] / 1e5),
+    ]
+    for phrase in phrases:
+        if not quoted(phrase, tex):
+            errors.append("Sentence does not match the result file: %s" % phrase[:110])
+    if depth_worst >= 3e-14:
+        errors.append("Depth error %.1e is not below the 3e-14 quoted in Section 8.2.3" % depth_worst)
+    # the abstract and the conclusion quote the largest position difference of Table 3
+    headline = "same solution to $%s$\\,m" % _sig1(max(pos_up, pos_lo))
+    if HAVE_TEXT and tex.count(headline) < 2:
+        errors.append("Abstract and conclusion must both quote %s" % headline)
 
     oce_summary = ("linearized step %.1e, update mismatch %.1f-%.1f%%, kappa span %.1f orders at 0.1 deg"
                    % (max(blk[c]["first_step_physical_rel_diff"] for blk in (upper, lower) for c in c5),
